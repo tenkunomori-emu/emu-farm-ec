@@ -45,6 +45,7 @@ flowchart LR
 | 2 | [docs/02-data-design.md](docs/02-data-design.md) | データ設計。最初から複数の生産者に対応できる形にする方針 |
 | 3 | [docs/adr/0001-tech-stack.md](docs/adr/0001-tech-stack.md) | 技術の選定と、その理由 |
 | 4 | [docs/adr/0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md) | ホスティング、ドメイン、引き渡しの方針 |
+| 5 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PRの進め方 |
 
 ## 背景(出典あり)
 
