@@ -43,9 +43,10 @@ flowchart LR
 |---|---|---|
 | 1 | [docs/01-requirements.md](docs/01-requirements.md) | 目的、課題、スコープ、機能一覧、非機能要件と品質目標、フェーズ計画 |
 | 2 | [docs/02-data-design.md](docs/02-data-design.md) | データ設計。最初から複数の生産者に対応できる形にする方針 |
-| 3 | [docs/adr/0001-tech-stack.md](docs/adr/0001-tech-stack.md) | 技術の選定と、その理由 |
-| 4 | [docs/adr/0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md) | ホスティング、ドメイン、引き渡しの方針 |
-| 5 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PRの進め方 |
+| 3 | [docs/03-basic-design.md](docs/03-basic-design.md) | 基本設計(作成中)。画面一覧、画面遷移 |
+| 4 | [docs/adr/0001-tech-stack.md](docs/adr/0001-tech-stack.md) | 技術の選定と、その理由 |
+| 5 | [docs/adr/0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md) | ホスティング、ドメイン、引き渡しの方針 |
+| 6 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PRの進め方 |
 
 ## 背景(出典あり)
 
