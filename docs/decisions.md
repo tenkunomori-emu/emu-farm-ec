@@ -19,7 +19,6 @@
 
 | # | 決定事項 | 反映した文書 | 議事録 |
 |---|---|---|---|
-
 | 1 | 要件定義書 v1.0([01-requirements.md](01-requirements.md))を確定する | 要件定義書 v1.0([01-requirements.md](01-requirements.md)) | 議事録_2026_1024 |
 | 2 | 管理画面の一部(ログイン、お知らせ・イベントの編集)をフェーズ1に入れる | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) F-09 | 議事録_2026_1025 |
 | 3 | 役割を、来訪者・運営メンバー・管理者・生産者の4つとする。牧場は生産者の1件目とする | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) 第5.1節 | 議事録_2026_1025 |
@@ -27,6 +26,7 @@
 | 5 | ゲスト購入と、送料の早期表示を、フェーズ2の要件に入れる | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) F-10、NF-17 | 議事録_2026_1025 |
 | 6 | フェーズ1の購入は、現在販売している他の販売サイトへ誘導する | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) F-05 | 議事録_2026_1025 |
 | 7 | フェーズ4の目標を、静岡県の生産者が参加する産直サイトとする | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) 第4章 | 議事録_2026_1025 |
+| 8 | 要件定義書 v1.1([01-requirements.md](01-requirements.md))を確定する | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) | 議事録_2026_1025 |
 
 ## 基本設計
 
@@ -37,7 +37,6 @@
 
 | # | 決定事項 | 反映した文書 | 議事録 |
 |---|---|---|---|
-| 8 | 要件定義書 v1.1([01-requirements.md](01-requirements.md))を確定する | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) | 議事録_2026_1025 |
 | 9 | 承認の手続きは設けない。工程と成果物はウォーターフォール型で進め、合意と承認は会議の議事録で記録する | [README.md](../README.md#進め方の原則)、[CONTRIBUTING.md](../CONTRIBUTING.md#設計書の確定と合意の記録) | 議事録_2026_1025 |
 | 10 | 作業は Issue から始める。ラベル(種類・工程・フェーズ・要確認)とマイルストーン(工程の成果物の確定まで)を使う。新メンバー向けのラベルは作らない | [CONTRIBUTING.md](../CONTRIBUTING.md#issue作業の単位) | 議事録_2026_1025 |
 | 11 | 文書は省略せずに「文書名 版(ファイル名へのリンク)」の形で書く | [CONTRIBUTING.md](../CONTRIBUTING.md#設計書の確定と合意の記録) | 議事録_2026_1025 |
