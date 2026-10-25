@@ -3,8 +3,8 @@
 静岡県森町の「天空の森エミュー牧場」のための、Webサイトとネットショップです。
 エミューを入口に、過疎の集落へ人と仕事を呼び戻す取り組み(村おこし)を支えるサイトを作ります。
 
-> ステータス: **要件定義書 v1.1([01-requirements.md](docs/01-requirements.md))確定。基本設計書([03-basic-design.md](docs/03-basic-design.md))を作成中**。実装は未着手です。
-> 要件定義書にある「要確認」「未確定」と書かれた項目は、事実が未確認のものです。推測で埋めず、確認してから確定します。
+> ステータス: **要件定義書 v1.1([01-requirements.md](docs/01-requirements.md))確定。基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md))を作成中**。実装は未着手です。
+> 要件定義書 v1.1([01-requirements.md](docs/01-requirements.md))にある「要確認」「未確定」と書かれた項目は、事実が未確認のものです。推測で埋めず、確認してから確定します。
 
 ## 工程と成果物
 
@@ -13,24 +13,22 @@
 | 工程 | 成果物 | 状態 |
 |---|---|---|
 | 要件定義 | 要件定義書 v1.1([01-requirements.md](docs/01-requirements.md)) | **確定** |
-| 基本設計 | 基本設計書([03-basic-design.md](docs/03-basic-design.md)) | 作成中 |
+| 基本設計 | 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md)) | 作成中 |
 | 詳細設計 | 詳細設計書 | 未着手 |
 | 実装 | ソースコード | 未着手 |
 | テスト | テスト仕様書、テスト結果 | 未着手 |
 | 公開・引き渡し | 運用設計書、操作手順書 | 未着手 |
 
-会議で合意したことは、[決定事項の記録](docs/decisions.md)に残す。
-
 ## 技術構成(予定)
 
 | 領域 | 技術 | 状態 |
 |---|---|---|
-| アプリケーション | Next.js(App Router)、TypeScript | 決定([ADR-0001](docs/adr/0001-tech-stack.md)) |
-| データベース・認証 | Supabase(PostgreSQL、Auth、行レベルセキュリティ) | 決定([ADR-0001](docs/adr/0001-tech-stack.md)) |
-| 決済 | Stripe | 決定([ADR-0001](docs/adr/0001-tech-stack.md)) |
-| ホスティング | 開発・試作: Vercel / 本番: 検討中 | [ADR-0002](docs/adr/0002-hosting-and-ownership.md) |
+| アプリケーション | Next.js(App Router)、TypeScript | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
+| データベース・認証 | Supabase(PostgreSQL、Auth、行レベルセキュリティ) | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
+| 決済 | Stripe | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
+| ホスティング | 開発・試作: Vercel / 本番: 検討中 | ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md)) |
 | ソース管理・自動チェック | GitHub(PR、Actions) | 予定 |
-| テスト | 型チェック、単体テスト、E2Eテスト | 予定([品質目標](docs/01-requirements.md#7-非機能要件)) |
+| テスト | 型チェック、単体テスト、E2Eテスト | 予定(品質目標は、要件定義書 v1.1([01-requirements.md](docs/01-requirements.md#7-非機能要件))第7章) |
 
 ## 構成図(予定)
 
@@ -58,8 +56,8 @@ flowchart LR
 |---|---|---|
 | 1 | [docs/01-requirements.md](docs/01-requirements.md) | 目的、課題、スコープ、機能一覧、非機能要件と品質目標、フェーズ計画 |
 | 2 | [docs/02-data-design.md](docs/02-data-design.md) | データ設計。最初から複数の生産者に対応できる形にする方針 |
-| 3 | [docs/03-basic-design.md](docs/03-basic-design.md) | 基本設計書(作成中)。画面一覧、画面遷移 |
-| 4 | [docs/decisions.md](docs/decisions.md) | 決定事項の記録。何を決め、どの文書に反映し、どの議事録に記録があるか |
+| 3 | [docs/03-basic-design.md](docs/03-basic-design.md) | 基本設計書 v0.1(作成中)。画面一覧、画面遷移 |
+| 4 | [docs/decisions.md](docs/decisions.md) | 決定事項の記録。これまでに決めたことを残した過去の記録で、今後は書き加えない |
 | 5 | [docs/adr/0001-tech-stack.md](docs/adr/0001-tech-stack.md) | 技術の選定と、その理由 |
 | 6 | [docs/adr/0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md) | ホスティング、ドメイン、引き渡しの方針 |
 | 7 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PR、設計書の確定の進め方 |
@@ -75,10 +73,10 @@ flowchart LR
 ## 進め方の原則
 
 1. **認知を最優先**: 売る仕組みより先に、「見つけてもらい、連絡先を残してもらう」入口を作る。
-2. **工程はウォーターフォール型、合意は議事録で**: 主催者は多忙なため、承認の手続きは設けない。工程と成果物はウォーターフォール型で進め、合意と承認に関しては、会議の議事録で記録する。毎日の会議で決めながら進めることで、主催者の時間を使わずに、手戻りを防ぐ。どの議事録に合意の記録があるかは、[決定事項の記録](docs/decisions.md)と各文書の改訂履歴で分かるようにする。
+2. **工程はウォーターフォール型、合意は議事録で**: 主催者は多忙なため、承認の手続きは設けない。工程と成果物はウォーターフォール型で進め、合意と承認に関しては、会議の議事録で記録する。毎日の会議で決めながら進めることで、主催者の時間を使わずに、手戻りを防ぐ。
 3. **規模に見合った設計**: 1つのアプリを機能別に整理する(モジュラーモノリス)。
 4. **土台だけ先に広げる**: 最初は牧場だけを扱うが、データ設計は、複数の生産者に対応できる形にする。
-5. **決めたことは記録する**: 会議で決めたことは [決定事項の記録](docs/decisions.md) に、技術判断の理由は `docs/adr/` に残す。
+5. **決めたことは記録する**: 会議やメールで合意したら、そのPRの説明文にある「合意の記録」の欄に、議事録の名前を書く。そのPRで文書の版を上げた場合は、その文書の改訂履歴にも、議事録の名前を書く。技術判断の理由は、`docs/adr/` に残す。手順は、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md#設計書の確定と合意の記録))に書いている。
 6. **変更はPR経由**: 変更の理由と、合意した議事録の名前を、PRに残す。
 7. **進み具合をいつでも見えるようにする**: [工程と成果物](#工程と成果物)の状態を常に最新にし、作成中の文書は下書きのPRとして出す。
 
