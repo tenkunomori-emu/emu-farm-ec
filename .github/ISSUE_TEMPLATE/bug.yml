@@ -1,0 +1,35 @@
+name: 不具合
+description: 動きがおかしい、表示が崩れているなど、不具合を報告する
+title: "[不具合] 起きていること"
+labels: ["fix"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 起きていること
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現する手順
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 本来の動き
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: 使った端末とブラウザ
+      placeholder: "例: iPhone、Safari"
+  - type: markdown
+    attributes:
+      value: 画面の写真を貼る場合は、個人情報(名前、メールアドレス、住所など)が写っていないか確認してください。

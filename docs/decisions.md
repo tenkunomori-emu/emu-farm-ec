@@ -20,3 +20,5 @@
 | 7 | フェーズ4の目標を、静岡県の生産者が参加する産直サイトとする | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) 第4章 | 議事録_2026_1025 |
 | 8 | 要件定義書 v1.1([01-requirements.md](01-requirements.md))を確定する | 要件定義書 v1.1([01-requirements.md](01-requirements.md)) | 議事録_2026_1025 |
 | 9 | 承認の手続きは設けない。工程と成果物はウォーターフォール型で進め、合意と承認は会議の議事録で記録する | [README.md](../README.md#進め方の原則)、[CONTRIBUTING.md](../CONTRIBUTING.md#設計書の確定と合意の記録) | 議事録_2026_1025 |
+| 10 | 作業は Issue から始める。ラベル(種類・工程・フェーズ・要確認)とマイルストーン(工程の成果物の確定まで)を使う。新メンバー向けのラベルは作らない | [CONTRIBUTING.md](../CONTRIBUTING.md#issue作業の単位) | 議事録_2026_1025 |
+| 11 | 文書は省略せずに「文書名 版(ファイル名へのリンク)」の形で書く | [CONTRIBUTING.md](../CONTRIBUTING.md#設計書の確定と合意の記録) | 議事録_2026_1025 |

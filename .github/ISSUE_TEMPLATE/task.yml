@@ -1,0 +1,37 @@
+name: 作業
+description: 設計書の作成、機能の実装、テストなど、1つの作業を登録する
+title: "[工程] 作業の内容"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        1つの Issue には、1つの作業だけを書きます。1つの PR で終えられる大きさにします。
+        タイトルの例: `[基本設計] 役割ごとの権限を決める`、`[実装] お問い合わせフォーム`
+  - type: textarea
+    id: purpose
+    attributes:
+      label: 目的
+      description: なぜこの作業が必要か
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 完了の条件
+      description: 何ができたら完了か。確認できる形で書く
+      placeholder: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: input
+    id: related
+    attributes:
+      label: 関連する要件・設計
+      description: 要件ID、画面ID、文書の章など
+      placeholder: "例: F-03、P-10、docs/03-basic-design.md 第1章"
+  - type: textarea
+    id: notes
+    attributes:
+      label: 補足
+      description: 参考になる情報、未決の点、前提となる Issue(#番号)など
