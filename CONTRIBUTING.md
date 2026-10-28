@@ -25,13 +25,13 @@
 
 | 接頭辞 | 対象 | 桁 | 書く場所 | 例 |
 |---|---|---|---|---|
-| `F-` | 機能要件 | 2桁 | [01-requirements.md](docs/01-requirements.md) 第6章 | F-05 |
-| `NF-` | 非機能要件 | 2桁 | [01-requirements.md](docs/01-requirements.md) 第7章 | NF-09 |
-| `RQ-` | 要件定義書の未確定事項 | 2桁 | [01-requirements.md](docs/01-requirements.md) 第10章 | RQ-12 |
-| `P-` | 来訪者向けの画面 | 2桁 | [03-basic-design.md](docs/03-basic-design.md) 第4.1節 | P-21 |
-| `A-` | 管理画面 | 2桁 | [03-basic-design.md](docs/03-basic-design.md) 第4.1節 | A-01 |
-| `BQ-` | 基本設計書の未決事項 | 2桁 | [03-basic-design.md](docs/03-basic-design.md) 第9章 | BQ-01 |
-| `DQ-` | データ設計の未決事項 | 2桁 | [02-data-design.md](docs/02-data-design.md) 「未決事項」 | DQ-01 |
+| `F-` | 機能要件 | 2桁 | 要件定義書([01-requirements.md](docs/01-requirements.md))第6章 | F-05 |
+| `NF-` | 非機能要件 | 2桁 | 要件定義書([01-requirements.md](docs/01-requirements.md))第7章 | NF-09 |
+| `RQ-` | 要件定義書の未確定事項 | 2桁 | 要件定義書([01-requirements.md](docs/01-requirements.md))第10章 | RQ-12 |
+| `P-` | 来訪者向けの画面 | 2桁 | 基本設計書([03-basic-design.md](docs/03-basic-design.md))第4.1節 | P-21 |
+| `A-` | 管理画面 | 2桁 | 基本設計書([03-basic-design.md](docs/03-basic-design.md))第4.1節 | A-01 |
+| `BQ-` | 基本設計書の未決事項 | 2桁 | 基本設計書([03-basic-design.md](docs/03-basic-design.md))第9章 | BQ-01 |
+| `DQ-` | データ設計の未決事項 | 2桁 | データ設計([02-data-design.md](docs/02-data-design.md))「未決事項」 | DQ-01 |
 | `ADR-` | 設計判断の記録 | 4桁 | [docs/adr/](docs/adr/)(ファイル名は `<4桁>-<内容を表す英語>.md`) | ADR-0003 |
 
 - 一度付けた ID は、項目が解決しても変えない。別の項目に使い回さない。
