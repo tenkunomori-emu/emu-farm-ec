@@ -48,7 +48,7 @@
 
 | 文書 | 状態 | Issue | 当てはめる内容 |
 |---|---|---|---|
-| 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md)) | 未対応 | Issue #37 | 第9章に BQ- を付ける。文章の中の ID に、項目の名前を添える |
+| 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md)) | 対応済み | Issue #37 | 第9章に BQ- を付けた。文章の中の ID に、項目の名前を添えた |
 | データ設計(版なし)([02-data-design.md](docs/02-data-design.md)) | 未対応 | Issue #38 | 「未決事項」に DQ- を付ける。基本設計書の BQ-02(購入手続きの画面)と同じ事項を消す |
 | 要件定義書 v1.1([01-requirements.md](docs/01-requirements.md)) | 未対応 | Issue #39 | 第10章に RQ- を付ける。文章の中の ID に、項目の名前を添える。v1.2 に上げ、会議で合意する |
 
