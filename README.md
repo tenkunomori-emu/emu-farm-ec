@@ -3,8 +3,8 @@
 静岡県森町の「天空の森エミュー牧場」のための、Webサイトとネットショップです。
 エミューを入口に、過疎の集落へ人と仕事を呼び戻す取り組み(村おこし)を支えるサイトを作ります。
 
-> ステータス: **要件定義書 v1.1([01-requirements.md](docs/01-requirements.md))確定。基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md))を作成中**。実装は未着手です。
-> 要件定義書 v1.1([01-requirements.md](docs/01-requirements.md))にある「要確認」「未確定」と書かれた項目は、事実が未確認のものです。推測で埋めず、確認してから確定します。
+> ステータス: **要件定義書 v1.2([01-requirements.md](docs/01-requirements.md))確定。基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md))を作成中**。実装は未着手です。
+> 要件定義書 v1.2([01-requirements.md](docs/01-requirements.md))にある「要確認」「未確定」と書かれた項目は、事実が未確認のものです。推測で埋めず、確認してから確定します。
 
 ## 工程と成果物
 
@@ -12,7 +12,7 @@
 
 | 工程 | 成果物 | 状態 |
 |---|---|---|
-| 要件定義 | 要件定義書 v1.1([01-requirements.md](docs/01-requirements.md)) | **確定** |
+| 要件定義 | 要件定義書 v1.2([01-requirements.md](docs/01-requirements.md)) | **確定** |
 | 基本設計 | 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md)) | 作成中 |
 | 詳細設計 | 詳細設計書 | 未着手 |
 | 実装 | ソースコード | 未着手 |
@@ -28,7 +28,7 @@
 | 決済 | Stripe | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
 | ホスティング | 開発・試作: Vercel / 本番: 検討中 | ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md)) |
 | ソース管理・自動チェック | GitHub(PR、Actions) | 予定 |
-| テスト | 型チェック、単体テスト、E2Eテスト | 予定(品質目標は、要件定義書 v1.1([01-requirements.md](docs/01-requirements.md#7-非機能要件))第7章) |
+| テスト | 型チェック、単体テスト、E2Eテスト | 予定(品質目標は、要件定義書 v1.2([01-requirements.md](docs/01-requirements.md#7-非機能要件))第7章) |
 
 ## 構成図(予定)
 
@@ -54,7 +54,7 @@ flowchart LR
 
 | 順番 | ファイル | 内容 |
 |---|---|---|
-| 1 | [docs/01-requirements.md](docs/01-requirements.md) | 目的、課題、スコープ、機能一覧、非機能要件と品質目標、フェーズ計画 |
+| 1 | [docs/01-requirements.md](docs/01-requirements.md) | 要件定義書 v1.2(確定)。目的、課題、スコープ、機能一覧、非機能要件と品質目標、フェーズ計画 |
 | 2 | [docs/02-data-design.md](docs/02-data-design.md) | データ設計 v0.1(作成中)。最初から複数の生産者に対応できる形にする方針 |
 | 3 | [docs/03-basic-design.md](docs/03-basic-design.md) | 基本設計書 v0.1(作成中)。画面一覧、画面遷移 |
 | 4 | [docs/decisions.md](docs/decisions.md) | 決定事項の記録。これまでに決めたことを残した過去の記録で、今後は書き加えない |
