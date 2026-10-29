@@ -56,7 +56,7 @@ flowchart LR
 |---|---|---|
 | 1 | [docs/01-requirements.md](docs/01-requirements.md) | 要件定義書 v1.2(確定)。目的、課題、スコープ、機能一覧、非機能要件と品質目標、フェーズ計画 |
 | 2 | [docs/02-data-design.md](docs/02-data-design.md) | データ設計 v0.1(作成中)。最初から複数の生産者に対応できる形にする方針 |
-| 3 | [docs/03-basic-design.md](docs/03-basic-design.md) | 基本設計書 v0.1(作成中)。画面一覧、画面遷移 |
+| 3 | [docs/03-basic-design.md](docs/03-basic-design.md) | 基本設計書 v0.1(作成中)。システム構成、画面一覧、画面遷移 |
 | 4 | [docs/decisions.md](docs/decisions.md) | 決定事項の記録。これまでに決めたことを残した過去の記録で、今後は書き加えない |
 | 5 | [docs/adr/0001-tech-stack.md](docs/adr/0001-tech-stack.md) | 技術の選定と、その理由 |
 | 6 | [docs/adr/0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md) | ホスティング、ドメイン、引き渡しの方針 |
