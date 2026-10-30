@@ -51,7 +51,7 @@
 |---|---|---|---|
 | 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md)) | 対応済み | Issue #37 | 第9章に BQ- を付けた。文章の中の ID に、項目の名前を添えた |
 | データ設計 v0.1([02-data-design.md](docs/02-data-design.md)) | 対応済み | Issue #38 | 版を v0.1 にした。「未決事項」に DQ- を付けた。基本設計書の BQ-02(購入手続きの画面)と同じ事項を消した |
-| 要件定義書 v1.3([01-requirements.md](docs/01-requirements.md)) | 対応済み | Issue #39 | 第10章に RQ- を付けた。文章の中の ID に、項目の名前を添えた。v1.1 から v1.2 に上げた(議事録_2026_1028) |
+| 要件定義書 v1.2([01-requirements.md](docs/01-requirements.md)) | 対応済み | Issue #39 | 第10章に RQ- を付けた。文章の中の ID に、項目の名前を添えた。v1.1 から v1.2 に上げた(議事録_2026_1028) |
 
 ### GitHub の番号と、文書の書き方
 
