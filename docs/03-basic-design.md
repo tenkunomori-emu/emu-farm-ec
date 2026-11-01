@@ -182,7 +182,7 @@ supabase/
 | 区分 | 技術 | 採用する版 | 確認した版 | 根拠 |
 |---|---|---|---|---|
 | 実行環境 | Node.js | 24(LTS) | — | Next.js 16 は Node.js 20.9 以上が必要 |
-| 言語 | TypeScript | 6.0 | 6.0.3 | 今の書き方の最後の版で、Next.js と ESLint の両方が対応している。6.0 の非推奨の警告を直しておけば、7 へ上げやすい。7 へは、ESLint が対応してから上げる |
+| 言語 | TypeScript | 6.0 | 6.0.3 | 今の書き方の最後の版で、typescript-eslint(ESLint の TypeScript 用の部品)が対応する範囲(6.1 未満)に入る。この範囲は、2026-11-01 に npm で確かめた。6.0 の非推奨の警告を直しておけば、7 へ上げやすい。7 へは、typescript-eslint が対応してから上げる |
 | フレームワーク | Next.js(App Router) | 16 | 16.4.3 | ADR-0001([0001-tech-stack.md](adr/0001-tech-stack.md)) |
 | 画面 | React | 19 | 19.3.1 | Next.js 16 が対応する版 |
 | 見た目 | Tailwind CSS | 4 | 4.3.3 | 画面の部品を、少ないファイルで保守できる |
