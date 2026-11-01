@@ -2,6 +2,7 @@
 
 - 日付: 2026-10-22
 - ステータス: 提案
+- 更新: Stripe Connect の扱い(理由の3)は、ADR-0004([0004-stripe-connect-direct-charges.md](0004-stripe-connect-direct-charges.md))で、将来の拡張から、フェーズ2から使うものに変えた。
 
 ## 背景
 
