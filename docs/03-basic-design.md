@@ -123,7 +123,7 @@ flowchart LR
 | 紹介 | 牧場・取り組みの紹介、お知らせ・成長日記、イベント、協賛・応援のご案内 | F-01、F-02、F-06、F-08 | フェーズ1 |
 | 問い合わせ・登録 | 問い合わせ、メールの登録 | F-03、F-04 | フェーズ1 |
 | 会員・権限 | ログイン、役割、メンバーの招待・削除 | F-09 | フェーズ1 |
-| 生産者 | 生産者の情報と、Stripe の生産者のアカウントとのつながり。フェーズ1では、牧場の1件だけを登録する | F-30、F-31、F-32 | フェーズ1 |
+| 生産者 | 生産者の情報と、Stripe の生産者のアカウントとのつながり。フェーズ1では、牧場の1件だけを登録する | F-31、F-32 | フェーズ1 |
 | 商品 | 商品の一覧・詳細、他の販売サイトへのリンク、商品の大きさ・重さ。フェーズ2から在庫 | F-05、F-11、F-14 | フェーズ1 |
 | 配送 | 運賃表、送料の計算、発送ステータス、送り状(BQ-07(送り状(伝票)の自動作成)) | F-12 | フェーズ2 |
 | 注文 | カート、支払い、注文、注文確認メール、返金の申し出と返金、注文ごとのメッセージ(写真を付けられ、履歴が残る) | F-10、F-12、F-13、F-14、F-15、F-16、F-31 | フェーズ2 |
@@ -183,16 +183,16 @@ supabase/
 |---|---|---|---|---|
 | 実行環境 | Node.js | 24(LTS) | — | Next.js 16 は Node.js 20.9 以上が必要 |
 | 言語 | TypeScript | 6.0 | 6.0.3 | 今の書き方の最後の版で、Next.js と ESLint の両方が対応している。6.0 の非推奨の警告を直しておけば、7 へ上げやすい。7 へは、ESLint が対応してから上げる |
-| フレームワーク | Next.js(App Router) | 16 | 16.4.3 | ADR-0001 |
+| フレームワーク | Next.js(App Router) | 16 | 16.4.3 | ADR-0001([0001-tech-stack.md](adr/0001-tech-stack.md)) |
 | 画面 | React | 19 | 19.3.1 | Next.js 16 が対応する版 |
 | 見た目 | Tailwind CSS | 4 | 4.3.3 | 画面の部品を、少ないファイルで保守できる |
-| データベース・認証・画像 | Supabase(`@supabase/supabase-js`、`@supabase/ssr`) | 2、0.12 | 2.118.0、0.12.7 | ADR-0001 |
+| データベース・認証・画像 | Supabase(`@supabase/supabase-js`、`@supabase/ssr`) | 2、0.12 | 2.118.0、0.12.7 | ADR-0001([0001-tech-stack.md](adr/0001-tech-stack.md)) |
 | データベースの管理 | Supabase CLI | 2 | 2.122.0 | 開発の環境と、`supabase/migrations/` の管理 |
-| 決済 | Stripe(`stripe`)、Stripe Connect | 23 | 23.1.0 | ADR-0001、ADR-0004。フェーズ2から |
+| 決済 | Stripe(`stripe`)、Stripe Connect | 23 | 23.1.0 | ADR-0001([0001-tech-stack.md](adr/0001-tech-stack.md))、ADR-0004([0004-stripe-connect-direct-charges.md](adr/0004-stripe-connect-direct-charges.md))。フェーズ2から |
 | 単体テスト | Vitest | 5 | 5.0.5 | NF-09(品質保証) |
 | E2Eテスト | Playwright(`@playwright/test`) | 1 | 1.64.1 | NF-04(スマートフォン)、NF-09(品質保証) |
 | CI | GitHub Actions | — | — | NF-01(表示速度)、NF-09(品質保証)の計測とテスト |
-| ホスティング(開発・試作) | Vercel Pro | — | — | ADR-0002 |
+| ホスティング(開発・試作) | Vercel Pro | — | — | ADR-0002([0002-hosting-and-ownership.md](adr/0002-hosting-and-ownership.md)) |
 
 ## 2. 業務フロー
 
