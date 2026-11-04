@@ -25,7 +25,7 @@
 |---|---|---|
 | アプリケーション | Next.js(App Router)、TypeScript | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
 | データベース・認証 | Supabase(PostgreSQL、Auth、行レベルセキュリティ) | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
-| 決済 | Stripe(Connect のダイレクト支払い) | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))) |
+| 決済 | Stripe(Connect のダイレクト支払い) | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))) |
 | ホスティング | 開発・試作: Vercel / 本番: 検討中 | ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md)) |
 | ソース管理・自動チェック | GitHub(PR、Actions) | 予定 |
 | テスト | 型チェック、単体テスト、E2Eテスト | 予定(品質目標は、要件定義書 v1.5([01-requirements.md](docs/01-requirements.md#7-非機能要件))第7章) |
@@ -61,7 +61,8 @@ flowchart LR
 | 5 | [docs/adr/0001-tech-stack.md](docs/adr/0001-tech-stack.md) | 技術の選定と、その理由 |
 | 6 | [docs/adr/0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md) | ホスティング、ドメイン、引き渡しの方針 |
 | 7 | [docs/adr/0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md) | 決済に Stripe Connect のダイレクト支払いを使う判断と、その理由 |
-| 8 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PR、設計書の確定の進め方 |
+| 8 | [docs/adr/0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md) | 生産者の Stripe のアカウントの設定と、仮押さえ・返金の方式の判断と、その理由 |
+| 9 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PR、設計書の確定の進め方 |
 
 ## 背景(出典あり)
 

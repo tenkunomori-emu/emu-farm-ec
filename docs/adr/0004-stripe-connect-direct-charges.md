@@ -2,6 +2,7 @@
 
 - 日付: 2026-10-29
 - ステータス: 採用
+- 更新: 「決定」の販売手数料の扱いと、「影響とリスク」の返金の扱い(残高が足りないと保留になる)は、ADR-0005([0005-stripe-account-holds-and-refunds.md](0005-stripe-account-holds-and-refunds.md))で変えた。
 
 ## 背景
 
