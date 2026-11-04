@@ -2,7 +2,7 @@
 
 - 日付: 2026-10-29
 - ステータス: 採用
-- 更新: 「決定」の販売手数料の扱いと、「影響とリスク」の返金の扱い(残高が足りないと保留になる)は、ADR-0005([0005-stripe-account-holds-and-refunds.md](0005-stripe-account-holds-and-refunds.md))で変えた。
+- 更新: 「決定」の販売手数料の扱いと、「影響とリスク」の返金の扱い(残高が足りないと保留になる)は、ADR-0005([0005-stripe-account-holds-and-refunds.md](0005-stripe-account-holds-and-refunds.md))で変えた。「決定」の「複数の生産者の商品は、生産者ごとに支払いを分ける」は、ADR-0006([0006-one-product-per-order.md](0006-one-product-per-order.md))で変えた。
 
 ## 背景
 
