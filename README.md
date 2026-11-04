@@ -62,7 +62,8 @@ flowchart LR
 | 6 | [docs/adr/0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md) | ホスティング、ドメイン、引き渡しの方針 |
 | 7 | [docs/adr/0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md) | 決済に Stripe Connect のダイレクト支払いを使う判断と、その理由 |
 | 8 | [docs/adr/0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md) | 生産者の Stripe のアカウントの設定と、仮押さえ・返金の方式の判断と、その理由 |
-| 9 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PR、設計書の確定の進め方 |
+| 9 | [docs/adr/0006-one-product-per-order.md](docs/adr/0006-one-product-per-order.md) | 購入の形(カートを作らず、1回の注文は1つの商品と、その数量にする)の判断と、その理由 |
+| 10 | [CONTRIBUTING.md](CONTRIBUTING.md) | ブランチ、コミット、PR、設計書の確定の進め方 |
 
 ## 背景(出典あり)
 
