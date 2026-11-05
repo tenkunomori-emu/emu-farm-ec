@@ -1,12 +1,13 @@
 name: 作業の登録
 description: 設計書の作成、機能の実装、テストなど、1つの作業を登録する
-title: "[工程] 作業の内容"
+title: "[分類] 作業の内容"
 body:
   - type: markdown
     attributes:
       value: |
         1つの Issue には、1つの作業だけを書きます。1つの PR で終えられる大きさにします。
-        タイトルの例: `[基本設計] 役割ごとの権限を決める`、`[実装] お問い合わせフォーム`
+        タイトルの例: `[基本設計] 役割ごとの権限を決める`、`[実装] お問い合わせフォーム`、`[進め方] 工程と文書の地図を決める`
+        分類は、CONTRIBUTING.md の「GitHub で付ける名前」の Issue のタイトルの行のとおりにします。
   - type: textarea
     id: purpose
     attributes:
