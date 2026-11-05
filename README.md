@@ -12,7 +12,7 @@
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v1.6([01-requirements.md](docs/01-requirements.md)) | 確定。v2.0 に書き直す |
-| 基本設計 | 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md))、データ設計 v0.1([02-data-design.md](docs/02-data-design.md)) | 作成中。要件定義書が v2.0 として確定したあとに、02-basic-design.md として書き直す |
+| 基本設計 | 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md))、データ設計 v0.1([02-data-design.md](docs/02-data-design.md)) | 作成中。要件定義書が v2.0 として確定したあとに、02-basic-design.md として書き直す。データ設計は、その論理データの章にまとめる |
 | 詳細設計 | 詳細設計書(03-detailed-design.md) | 未着手 |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))に足す「開発環境の作り方」の節 | 未着手 |
 | 実装・単体テスト | コード、単体テスト | 未着手 |
