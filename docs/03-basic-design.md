@@ -207,7 +207,7 @@ supabase/
 ### 4.1 画面一覧
 
 画面IDの付け方: 来訪者向けは `P-`、管理画面は `A-` とする。番号の十の位は、フェーズに合わせる(1〜19: フェーズ1、20〜: フェーズ2)。
-「見られる役割」は、要件定義書 v1.3([01-requirements.md](01-requirements.md#51-役割と権限))第5.1節の役割を使う。
+「見られる役割」は、要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/requirements-v1.6/docs/01-requirements.md#51-役割と権限))第5.1節の役割を使う。
 「要件」の列は、要件定義書 v1.3([01-requirements.md](01-requirements.md))の要件ID(第6章の機能要件、第7章の非機能要件)を示す。
 
 #### 4.1.1 来訪者向け(フェーズ1)
