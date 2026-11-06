@@ -29,8 +29,8 @@ body:
     id: related
     attributes:
       label: 関連する要件・設計
-      description: 要件ID、画面ID、文書の章など
-      placeholder: "例: F-03、P-10、docs/03-basic-design.md 第1章"
+      description: 要件や画面の ID、文書名など
+      placeholder: "例: 要件の ID、要件定義書(docs/01-requirements.md)"
   - type: textarea
     id: notes
     attributes:
