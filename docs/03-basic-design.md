@@ -6,7 +6,7 @@
 |---|---|
 | 版 | v0.1 |
 | 状態 | **作成中** |
-| もとにする要件 | 要件定義書 v1.3([01-requirements.md](01-requirements.md)) |
+| もとにする要件 | 要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/8ccd60856cff895c0d5b71d5273f04aa64ca1c84/docs/01-requirements.md)) |
 | 合意の記録 | 会議の議事録に記録する。版を上げたときは、下の改訂履歴に議事録の名前を書く。作成中の合意は、その変更のPRの説明文にある「合意の記録」の欄に書く |
 
 注釈: 版は、文書ごとに付ける。作成中は v0.1、v0.2…とし、合意して確定した時点で v1.0 とする。確定した後の版の付け方は、[CONTRIBUTING.md](../CONTRIBUTING.md) の「設計書の確定と合意の記録」に従う。
@@ -40,7 +40,7 @@
 
 ## 1. システム構成(方式設計)
 
-この章は、要件定義書 v1.3([01-requirements.md](01-requirements.md))の第9章(前提・制約)、ADR-0001([adr/0001-tech-stack.md](adr/0001-tech-stack.md))、ADR-0002([adr/0002-hosting-and-ownership.md](adr/0002-hosting-and-ownership.md))、ADR-0004([adr/0004-stripe-connect-direct-charges.md](adr/0004-stripe-connect-direct-charges.md))と、議事録_2026_1029 の合意をもとにする。
+この章は、要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/8ccd60856cff895c0d5b71d5273f04aa64ca1c84/docs/01-requirements.md))の第9章(前提・制約)、ADR-0001([adr/0001-tech-stack.md](adr/0001-tech-stack.md))、ADR-0002([adr/0002-hosting-and-ownership.md](adr/0002-hosting-and-ownership.md))、ADR-0004([adr/0004-stripe-connect-direct-charges.md](adr/0004-stripe-connect-direct-charges.md))と、議事録_2026_1029 の合意をもとにする。
 
 ### 1.1 システム構成図
 
@@ -207,8 +207,8 @@ supabase/
 ### 4.1 画面一覧
 
 画面IDの付け方: 来訪者向けは `P-`、管理画面は `A-` とする。番号の十の位は、フェーズに合わせる(1〜19: フェーズ1、20〜: フェーズ2)。
-「見られる役割」は、要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/requirements-v1.6/docs/01-requirements.md#51-役割と権限))第5.1節の役割を使う。
-「要件」の列は、要件定義書 v1.3([01-requirements.md](01-requirements.md))の要件ID(第6章の機能要件、第7章の非機能要件)を示す。
+「見られる役割」は、要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/8ccd60856cff895c0d5b71d5273f04aa64ca1c84/docs/01-requirements.md#51-役割と権限))第5.1節の役割を使う。
+「要件」の列は、要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/8ccd60856cff895c0d5b71d5273f04aa64ca1c84/docs/01-requirements.md))の要件ID(第6章の機能要件、第7章の非機能要件)を示す。
 
 #### 4.1.1 来訪者向け(フェーズ1)
 
@@ -226,7 +226,7 @@ supabase/
 | P-10 | お問い合わせ | 種別(イベント/見学/取材/協賛/商品)、名前、メール、内容、プライバシーポリシーへの同意 | F-03 | 全員 |
 | P-11 | お問い合わせ完了 | 受付の表示、返信までの目安 | F-03 | 全員 |
 | P-12 | メール/LINE登録 | メールの登録フォーム、LINE公式アカウントの友だち追加 | F-04 | 全員 |
-| P-13 | プライバシーポリシー | 個人情報の利用目的、問い合わせ先 | 要件定義書 v1.3([01-requirements.md](01-requirements.md))第4章(フェーズ1で必須) | 全員 |
+| P-13 | プライバシーポリシー | 個人情報の利用目的、問い合わせ先 | 要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/8ccd60856cff895c0d5b71d5273f04aa64ca1c84/docs/01-requirements.md))第4章(フェーズ1で必須) | 全員 |
 | P-14 | エラー(404など) | トップや商品一覧への導線 | — | 全員 |
 
 #### 4.1.2 管理画面(フェーズ1、F-09(管理画面の一部))
@@ -250,7 +250,7 @@ supabase/
 | P-21 | 購入手続き(お届け先、支払い) | F-10 | 全員(ゲスト購入) |
 | P-22 | 注文完了 | F-10, F-13 | 購入者 |
 | P-23 | 注文内容の確認(メールのリンクから開く) | F-12 | 購入者 |
-| P-24 | 特定商取引法に基づく表記 | 要件定義書 v1.3([01-requirements.md](01-requirements.md))第8章 | 全員 |
+| P-24 | 特定商取引法に基づく表記 | 要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/8ccd60856cff895c0d5b71d5273f04aa64ca1c84/docs/01-requirements.md))第8章 | 全員 |
 | A-20 | 商品の管理 | F-14 | 管理者、生産者(自分の商品のみ) |
 | A-21 | 在庫の管理 | F-11 | 管理者、生産者(自分の商品のみ) |
 | A-22 | 注文・出荷の管理 | F-12 | 管理者、生産者(自分の出荷のみ) |
@@ -331,7 +331,7 @@ flowchart LR
 | BQ-01 | 管理画面のログイン方式 | メールとパスワード / メールのリンク(マジックリンク) / Googleアカウント。メールのリンクは、メールの安全確認機能がリンクを先に開いてしまい、無効になることがある。運営メンバーの使いやすさと、この問題への対策を合わせて決める | A-01 |
 | BQ-02 | 購入手続きの画面 | Stripeの決済ページ(Checkout)を使う / 自前の画面に組み込む(Elements) | P-21 |
 | BQ-03 | お知らせ・成長日記の本文の書き方 | 見たままに編集できる形式 / 簡単な記法(Markdown)。非エンジニアが使うことを前提に決める | A-03 |
-| BQ-04 | 問い合わせを受けたときの通知先 | 要件定義書 v1.3([01-requirements.md](01-requirements.md))の RQ-12(問い合わせ・登録の通知を受け取る人と、連絡の手段)の回答を待つ | A-05 |
+| BQ-04 | 問い合わせを受けたときの通知先 | 要件定義書 v1.3([01-requirements.md](https://github.com/tenkunomori-emu/emu-farm-ec/blob/8ccd60856cff895c0d5b71d5273f04aa64ca1c84/docs/01-requirements.md))の RQ-12(問い合わせ・登録の通知を受け取る人と、連絡の手段)の回答を待つ | A-05 |
 | BQ-05 | アクセス解析の方法 | Google アナリティクス / Vercel の Web Analytics / その他。Cookie の同意の表示と、プライバシーポリシーの書き方が変わる | 第1章、F-07 |
 | BQ-06 | 試作の Supabase の料金プラン | 無料プラン / 有料プラン(Pro)。無料プランは、使われない期間が続くと止まることがある。条件は、公式の情報で確認する | 第1章 |
 | BQ-07 | 送り状(伝票)の自動作成 | ヤマト運輸の B2クラウドAPI を使う / 使わない。契約の名義(運営か生産者ごとか)と、API を使う条件を、ヤマト運輸に確認する | 第1章、F-12 |
