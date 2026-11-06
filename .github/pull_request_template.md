@@ -27,4 +27,4 @@
 
 ## 関連する文書・Issue
 
-<!-- 例: Closes #12 / docs/01-requirements.md の F-10 -->
+<!-- 例: Closes #12 / 要件定義書(docs/01-requirements.md)の FR-001 -->
