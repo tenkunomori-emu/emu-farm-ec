@@ -16,7 +16,7 @@
 | 詳細設計 | 詳細設計書(03-detailed-design.md) | 未着手 |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))に足す「開発環境の作り方」の節 | 未着手 |
 | 実装・単体テスト | コード、単体テスト | 未着手 |
-| テスト・品質確認 | テスト仕様書と結果(04-test.md)。要件からテストへの対応表も同じ文書に置き、要件定義の工程で作り始める | 未着手 |
+| テスト・品質確認 | テスト仕様書と結果、対応表のテストの列(04-test.md) | 未着手 |
 | リリース・運用 | 運用設計書と操作手順書(05-operations.md) | 未着手 |
 
 工程をまたぐ技術の判断は、ADR に残しています: ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))(技術の選定)、ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md))(ホスティングと引き渡し)、ADR-0003([0003-ai-review.md](docs/adr/0003-ai-review.md))(AI のレビュー)、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))(ダイレクト支払い)、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))(生産者のアカウント、仮押さえと返金)、ADR-0006([0006-one-product-per-order.md](docs/adr/0006-one-product-per-order.md))(1回の注文は1つの商品)。[決定事項の記録](docs/decisions.md)は過去の記録で、今後は書き加えません。
