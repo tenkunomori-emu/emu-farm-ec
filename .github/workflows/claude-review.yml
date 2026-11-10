@@ -29,11 +29,23 @@ jobs:
       - name: 前のレビューの行へのコメントと返信を取り出す
         env:
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
         run: |
-          gh api --paginate \
-            "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments" \
-            --jq '.[] | select(.author_association == "OWNER" or .author_association == "MEMBER" or .author_association == "COLLABORATOR" or .user.login == "claude[bot]") | {id, in_reply_to_id, user: .user.login, path, line, original_line, body}' \
-            > review-threads.jsonl
+          gh api --paginate "repos/$REPO/pulls/$PR/comments" \
+            --jq '.[] | {id, in_reply_to_id, user: .user.login, path, line, original_line, body}' \
+            > all-comments.jsonl
+          # このリポジトリへの書き込みの権限がある人と、AI のレビューのコメントだけを残す
+          allowed='["claude[bot]"]'
+          for u in $(jq -r '.user' all-comments.jsonl | sort -u); do
+            p=$(gh api "repos/$REPO/collaborators/$u/permission" --jq .permission 2>/dev/null || true)
+            case "$p" in
+              admin|maintain|write) allowed=$(jq -c --arg u "$u" '. + [$u]' <<<"$allowed") ;;
+            esac
+          done
+          jq -c --argjson allowed "$allowed" 'select(.user as $u | $allowed | index($u))' all-comments.jsonl > review-threads.jsonl
+          rm all-comments.jsonl
+          echo "残したコメントの人: $allowed"
 
       - name: レビューする
         uses: anthropics/claude-code-action@v1
