@@ -2,7 +2,7 @@
 
 生産者が出店し、購入者が生産者から直接買うマーケットプレイスです。代金は、購入者から各生産者の Stripe のアカウントに直接入り、管理者はアプリケーション手数料だけを受け取ります。
 
-> ステータス: **作り直し中**。要件定義書([01-requirements.md](docs/01-requirements.md))を、マーケットプレイスの要件定義書として書き直します。基本設計書([03-basic-design.md](docs/03-basic-design.md))とデータ設計([02-data-design.md](docs/02-data-design.md))は、要件定義書が確定したあとに書き直します。実装は未着手です。各文書の版と状態は、下の「工程と成果物」の表のとおりです。
+> ステータス: **作り直し中**。要件定義書([01-requirements.md](docs/01-requirements.md))は、マーケットプレイスの要件定義書として確定しました。基本設計書([03-basic-design.md](docs/03-basic-design.md))とデータ設計([02-data-design.md](docs/02-data-design.md))を、確定した要件定義書をもとに書き直します。実装は未着手です。各文書の版と状態は、下の「工程と成果物」の表のとおりです。
 
 ## 工程と成果物
 
@@ -11,7 +11,7 @@
 | 工程 | 成果物 | 状態 |
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
-| 要件定義 | 要件定義書 v2.0([01-requirements.md](docs/01-requirements.md)) | 要件定義書は作成中(直前の確定版は v1.6。タグ requirements-v1.6) |
+| 要件定義 | 要件定義書 v2.0([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.0) |
 | 基本設計 | 基本設計書 v0.1([03-basic-design.md](docs/03-basic-design.md))、データ設計 v0.1([02-data-design.md](docs/02-data-design.md))、要件から設計、テストへの対応表の最初の版(04-test.md。要件の ID と、基本設計の列) | 作成中。要件定義書が v2.0 として確定したあとに、02-basic-design.md として書き直す。データ設計は、その論理データの章にまとめる。対応表は未着手 |
 | 詳細設計 | 詳細設計書(03-detailed-design.md) | 未着手 |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))に足す「開発環境の作り方」の節 | 未着手 |
