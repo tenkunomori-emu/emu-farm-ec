@@ -12,7 +12,7 @@
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v2.0([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.0) |
-| 基本設計 | 基本設計書(02-basic-design.md)、方式検証のコード(spikes/)、要件から設計、テストへの対応表の最初の版(04-test.md。要件の ID と、基本設計の列) | 書き直し中。基本設計書は、最初の章を書く PR で作る。方式検証のコード(spikes/stripe/)で、お金の流れの前提を確かめ、結果を ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))に記録した。対応表([04-test.md](docs/04-test.md))は作成中。要件の ID を並べ、基本設計の列は、各章を書く PR で埋める |
+| 基本設計 | 基本設計書 v0.1([02-basic-design.md](docs/02-basic-design.md))、方式検証のコード(spikes/)、要件から設計、テストへの対応表の最初の版(04-test.md。要件の ID と、基本設計の列) | 作成中。基本設計書に、「状態遷移と、決済と送金の流れ」を書いた。方式検証のコード(spikes/stripe/)で、お金の流れの前提を確かめ、結果を ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))に記録した。対応表([04-test.md](docs/04-test.md))は作成中。要件の ID を並べ、基本設計の列は、各章を書く PR で埋める |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))に足す「開発環境の作り方」の節 | 未着手 |
 | 詳細設計 | 機能ごとのマイグレーション、型、テスト | 未着手 |
 | 実装・単体テスト | コード | 未着手 |
