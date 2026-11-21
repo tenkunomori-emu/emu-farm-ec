@@ -87,7 +87,7 @@
 - Accounts v2 の組み合わせの制約は、マイナス残高の責任を管理者にするなら手数料も管理者、Express なら両方とも管理者、フルなら両方とも Stripe、の3つである。ダッシュボードなしで両方とも Stripe にすることを禁じる制約はない。
 - Express で、手数料もマイナス残高の責任も Stripe の側にする組み合わせは、公開プレビューである。
 - カードの返金は、すぐに使える残高が足りないと、足りるまで結果待ちになり、45日たっても足りなければ失敗する。
-- 照会をよく使うカードの会社は American Express と Discover で、Visa と Mastercard はもう使っていない。日本についての記述はない(「How disputes work」)。MVP で受け付けるカード(FR-044)では、照会が起きるのは主に American Express の支払いである。
+- 照会をよく使うカードの会社は American Express とディスカバーで、Visa と Mastercard はもう使っていない。日本についての記述はない(「How disputes work」)。MVP で受け付けるカード(FR-044)では、照会が起きるのは主に American Express の支払いである。
 - 止めるブランドの値 discover_global_network には、ディスカバー、ダイナースクラブ、JCB のほかに、銀聯(UnionPay)と Elo が入っている。
 
 ## 影響とリスク
