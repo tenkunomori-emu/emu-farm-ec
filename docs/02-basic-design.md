@@ -18,6 +18,70 @@
 
 書くものと書かないものは、開発の進め方([CONTRIBUTING.md](../CONTRIBUTING.md#工程とゲート))の「工程とゲート」のとおりにする。要件は、要件定義書([01-requirements.md](01-requirements.md))の ID で指す。
 
+## システム構成と技術の分担
+
+### システム構成図
+
+MVP のシステムは、Vercel で動かす1つの Next.js のアプリと、外部のサービス(Supabase、Stripe、メールを送るサービス、アクセス解析)でできている。
+
+```mermaid
+flowchart LR
+    subgraph USERS["利用者"]
+        BUYER["購入者<br/>(登録していない人、会員)"]
+        PRODUCER["生産者"]
+        ADMIN["管理者<br/>(オーナー、スタッフ)"]
+    end
+    BROWSER["ブラウザ"]
+    subgraph VERCEL["Vercel"]
+        APP["Next.js のアプリ<br/>(サーバー)"]
+    end
+    subgraph SUPABASE["Supabase"]
+        DB[("データベース<br/>(PostgreSQL)")]
+        AUTH["認証"]
+        STORAGE["ファイルの保存"]
+    end
+    subgraph STRIPE["Stripe"]
+        STRIPE_UI["カードの入力欄、<br/>埋め込みの部品"]
+        STRIPE_API["API"]
+    end
+    MAIL["メールを送るサービス"]
+    ANALYTICS["アクセス解析"]
+    TIMER["期限で動く処理の<br/>きっかけ"]
+    DEV["保守を担う開発者"]
+    GITHUB["GitHub"]
+
+    USERS --> BROWSER
+    BROWSER -- "画面の表示と操作" --> APP
+    BROWSER -- "カード情報、生産者の登録の情報" --> STRIPE_UI
+    BROWSER -- "写真の送信と表示" --> STORAGE
+    BROWSER -- "ページの閲覧" --> ANALYTICS
+    APP -- "読み書き" --> DB
+    APP -- "ログインの確かめ" --> AUTH
+    APP -- "写真を送る URL と、見る URL を出す" --> STORAGE
+    APP -- "支払い、返金、生産者のアカウントの操作" --> STRIPE_API
+    STRIPE_API -- "知らせ(Webhook)" --> APP
+    APP -- "メールを頼む" --> MAIL
+    MAIL -- "メール" --> USERS
+    MAIL -- "処理が止まったときの知らせ" --> DEV
+    TIMER -- "決まった間隔で呼ぶ" --> APP
+    GITHUB -- "コードを出す" --> VERCEL
+```
+
+- 矢印は、つなぎ始める側から、つながれる側へ引いている。
+- ブラウザがつなぐ相手は、Next.js のアプリ、Stripe、Supabase のファイルの保存、アクセス解析の4つである。データベースと認証には、ブラウザから直接つながない。理由は、「技術の分担」に書く。
+- カード情報と、生産者が Stripe に登録する情報(本人確認、銀行口座)は、ブラウザから Stripe に直接送られ、Next.js のアプリを通らない(NFR-012、ADR-0009)。
+- Stripe は、支払い、返金、不審請求、生産者のアカウントの出来事を、知らせ(Webhook)で Next.js のアプリに送る。
+- 期限で動く処理(期限での取り消し、停止、知らせ、消すこと、Stripe との突き合わせ)は、決まった間隔で Next.js のアプリを呼んで動かす。処理の中身は、Next.js のアプリにある。
+
+この章で決めず、ほかの章と工程で決めるもの:
+
+| 決めること | 決める場所 |
+|---|---|
+| ログインと2段階認証の方式、認証のメールの送り方 | 「認証と認可」 |
+| メールを送るサービス、アクセス解析のツール、受ける Stripe の知らせ、購入手続きの画面の作り | 「外部連携」 |
+| 期限で動く処理を動かす仕組みと、止まったときの知らせ | 「非機能と運用の方式」 |
+| 開発・検証・本番の環境の分け方 | 開発基盤の準備の工程 |
+
 ## 状態遷移と、決済と送金の流れ
 
 ### 状態の持ち方
