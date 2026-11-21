@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>方式検証: 埋め込みの登録の部品</title>
+  <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
+  <style>
+    body { font-family: sans-serif; max-width: 960px; margin: 24px auto; padding: 0 16px; }
+    section { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    .error { color: #b00020; white-space: pre-wrap; }
+    #exit { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>方式検証: 埋め込みの登録の部品</h1>
+  <p id="session-error" class="error"></p>
+  <p id="exit"></p>
+  <section><h2>登録(account-onboarding)</h2><div id="account-onboarding"></div><p class="error"></p></section>
+  <script>
+    const fetchClientSecret = async () => {
+      const response = await fetch("/account_session", { method: "POST" });
+      const body = await response.json();
+      if (!response.ok) {
+        document.getElementById("session-error").textContent = "AccountSession を作れなかった: " + body.error;
+        return undefined;
+      }
+      return body.client_secret;
+    };
+
+    window.StripeConnect = window.StripeConnect || {};
+    StripeConnect.onLoad = () => {
+      const instance = StripeConnect.init({
+        publishableKey: "__PUBLISHABLE_KEY__",
+        fetchClientSecret,
+        locale: "ja-JP",
+      });
+      const component = instance.create("account-onboarding");
+      const container = document.getElementById("account-onboarding");
+      component.setOnLoadError(({ error }) => {
+        container.parentElement.querySelector(".error").textContent =
+          "読み込めなかった: " + error.type + " " + (error.message ?? "");
+      });
+      component.setOnExit(() => {
+        document.getElementById("exit").textContent =
+          "登録の部品が終わりを知らせた(" + new Date().toLocaleTimeString("ja-JP") + ")。";
+      });
+      container.appendChild(component);
+    };
+  </script>
+</body>
+</html>
