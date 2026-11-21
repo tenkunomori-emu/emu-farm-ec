@@ -12,14 +12,14 @@
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v2.0([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.0) |
-| 基本設計 | 基本設計書(02-basic-design.md)、方式検証のコード(spikes/)、要件から設計、テストへの対応表の最初の版(04-test.md。要件の ID と、基本設計の列) | 書き直し中。基本設計書は、最初の章を書く PR で作る。方式検証のコードと対応表は未着手 |
+| 基本設計 | 基本設計書(02-basic-design.md)、方式検証のコード(spikes/)、要件から設計、テストへの対応表の最初の版(04-test.md。要件の ID と、基本設計の列) | 書き直し中。基本設計書は、最初の章を書く PR で作る。方式検証のコード(spikes/stripe/)で、お金の流れの前提を確かめ、結果を ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))に記録した。対応表は未着手 |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))に足す「開発環境の作り方」の節 | 未着手 |
 | 詳細設計 | 機能ごとのマイグレーション、型、テスト | 未着手 |
 | 実装・単体テスト | コード | 未着手 |
 | テスト・品質確認 | テスト仕様書と結果、対応表のテストの列(04-test.md) | 未着手 |
 | リリース・運用 | 運用設計書と操作手順書(05-operations.md) | 未着手 |
 
-工程をまたぐ技術の判断は、ADR に残しています: ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))(技術の選定)、ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md))(ホスティングと引き渡し)、ADR-0003([0003-ai-review.md](docs/adr/0003-ai-review.md))(AI のレビュー)、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))(ダイレクト支払い)、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))(生産者のアカウント、仮押さえと返金)、ADR-0006([0006-one-product-per-order.md](docs/adr/0006-one-product-per-order.md))(1回の注文は1つの商品)、ADR-0007([0007-ai-review-model.md](docs/adr/0007-ai-review-model.md))(AI のレビューのモデル)、ADR-0008([0008-jcb-acceptance.md](docs/adr/0008-jcb-acceptance.md))(JCB の受け付け)。[決定事項の記録](docs/decisions.md)は過去の記録で、今後は書き加えません。
+工程をまたぐ技術の判断は、ADR に残しています: ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))(技術の選定)、ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md))(ホスティングと引き渡し)、ADR-0003([0003-ai-review.md](docs/adr/0003-ai-review.md))(AI のレビュー)、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))(ダイレクト支払い)、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))(生産者のアカウント、仮押さえと返金)、ADR-0006([0006-one-product-per-order.md](docs/adr/0006-one-product-per-order.md))(1回の注文は1つの商品)、ADR-0007([0007-ai-review-model.md](docs/adr/0007-ai-review-model.md))(AI のレビューのモデル)、ADR-0008([0008-jcb-acceptance.md](docs/adr/0008-jcb-acceptance.md))(JCB の受け付け)、ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))(生産者のアカウントと登録、方式検証の結果)。[決定事項の記録](docs/decisions.md)は過去の記録で、今後は書き加えません。
 
 ## 技術構成(予定)
 
