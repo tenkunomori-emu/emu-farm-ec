@@ -27,48 +27,42 @@ MVP のシステムは、Vercel で動かす1つの Next.js のアプリと、�
 ```mermaid
 flowchart LR
     subgraph USERS["利用者"]
+        direction TB
         BUYER["購入者<br/>(登録していない人、会員)"]
         PRODUCER["生産者"]
         ADMIN["管理者<br/>(オーナー、スタッフ)"]
     end
     BROWSER["ブラウザ"]
-    subgraph VERCEL["Vercel"]
-        APP["Next.js のアプリ<br/>(サーバー)"]
+    TIMER["期限で動く処理の<br/>きっかけ"]
+    APP["Next.js のアプリ<br/>(サーバー)<br/>Vercel で動かす"]
+    subgraph STRIPE["Stripe"]
+        STRIPE_UI["カードの入力欄、<br/>埋め込みの部品"]
+        STRIPE_API["API"]
     end
+    MAIL["メールを送るサービス<br/>(利用者と、保守を担う<br/>開発者にメールを送る)"]
     subgraph SUPABASE["Supabase"]
         DB[("データベース<br/>(PostgreSQL)")]
         AUTH["認証"]
         STORAGE["ファイルの保存"]
     end
-    subgraph STRIPE["Stripe"]
-        STRIPE_UI["カードの入力欄、<br/>埋め込みの部品"]
-        STRIPE_API["API"]
-    end
-    MAIL["メールを送るサービス"]
     ANALYTICS["アクセス解析"]
-    TIMER["期限で動く処理の<br/>きっかけ"]
-    DEV["保守を担う開発者"]
-    GITHUB["GitHub"]
 
     USERS --> BROWSER
     BROWSER -- "画面の表示と操作" --> APP
-    BROWSER -- "カード情報、生産者の登録の情報" --> STRIPE_UI
-    BROWSER -- "写真の送信と表示" --> STORAGE
-    BROWSER -- "ページの閲覧" --> ANALYTICS
-    APP -- "読み書き" --> DB
-    APP -- "ログインの確かめ" --> AUTH
-    APP -- "写真を送る URL と、見る URL を出す" --> STORAGE
-    APP -- "支払い、返金、生産者のアカウントの操作" --> STRIPE_API
+    TIMER -- "決まった間隔で呼ぶ" --> APP
+    APP -- "支払い、返金、<br/>生産者のアカウントの操作" --> STRIPE_API
     STRIPE_API -- "知らせ(Webhook)" --> APP
     APP -- "メールを頼む" --> MAIL
-    MAIL -- "メール" --> USERS
-    MAIL -- "処理が止まったときの知らせ" --> DEV
-    TIMER -- "決まった間隔で呼ぶ" --> APP
-    GITHUB -- "コードを出す" --> VERCEL
+    APP -- "読み書き" --> DB
+    APP -- "ログインの確かめ" --> AUTH
+    APP -- "写真を送る URL と、<br/>見る URL を出す" --> STORAGE
+    BROWSER -- "カード情報、<br/>生産者の登録の情報" --> STRIPE_UI
+    BROWSER -- "写真の送信と表示" --> STORAGE
+    BROWSER -- "ページの閲覧" --> ANALYTICS
 ```
 
 - 矢印は、つなぎ始める側から、つながれる側へ引いている。
-- ブラウザがつなぐ相手は、Next.js のアプリ、Stripe、Supabase のファイルの保存、アクセス解析の4つである。データベースと認証には、ブラウザから直接つながない。理由は、「技術の分担」に書く。
+- ブラウザがつなぐ相手は、Next.js のアプリ、Stripe、Supabase のファイルの保存、アクセス解析の4つである。データベースには、ブラウザから直接つながない。理由は、「技術の分担」に書く。認証へのつなぎ方は、「認証と認可」で決める。
 - カード情報と、生産者が Stripe に登録する情報(本人確認、銀行口座)は、ブラウザから Stripe に直接送られ、Next.js のアプリを通らない(NFR-012、ADR-0009)。
 - Stripe は、支払い、返金、不審請求、生産者のアカウントの出来事を、知らせ(Webhook)で Next.js のアプリに送る。
 - 期限で動く処理(期限での取り消し、停止、知らせ、消すこと、Stripe との突き合わせ)は、決まった間隔で Next.js のアプリを呼んで動かす。処理の中身は、Next.js のアプリにある。
