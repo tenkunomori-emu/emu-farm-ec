@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>方式検証: 埋め込みの画面部品</title>
+  <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
+  <style>
+    body { font-family: sans-serif; max-width: 960px; margin: 24px auto; padding: 0 16px; }
+    section { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    .error { color: #b00020; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>方式検証: 埋め込みの画面部品</h1>
+  <p id="session-error" class="error"></p>
+  <section><h2>お知らせのバナー(notification-banner)</h2><div id="notification-banner"></div><p class="error"></p></section>
+  <section><h2>アカウントの管理(account-management)</h2><div id="account-management"></div><p class="error"></p></section>
+  <section><h2>残高(balances)</h2><div id="balances"></div><p class="error"></p></section>
+  <section><h2>書類(documents)</h2><div id="documents"></div><p class="error"></p></section>
+  <script>
+    const fetchClientSecret = async () => {
+      const response = await fetch("/account_session", { method: "POST" });
+      const body = await response.json();
+      if (!response.ok) {
+        document.getElementById("session-error").textContent = "AccountSession を作れなかった: " + body.error;
+        return undefined;
+      }
+      return body.client_secret;
+    };
+
+    window.StripeConnect = window.StripeConnect || {};
+    StripeConnect.onLoad = () => {
+      const instance = StripeConnect.init({
+        publishableKey: "__PUBLISHABLE_KEY__",
+        fetchClientSecret,
+        locale: "ja-JP",
+      });
+      for (const name of ["notification-banner", "account-management", "balances", "documents"]) {
+        const component = instance.create(name);
+        const container = document.getElementById(name);
+        component.setOnLoadError(({ error }) => {
+          container.parentElement.querySelector(".error").textContent =
+            "読み込めなかった: " + error.type + " " + (error.message ?? "");
+        });
+        container.appendChild(component);
+      }
+    };
+  </script>
+</body>
+</html>

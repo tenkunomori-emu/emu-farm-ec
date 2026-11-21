@@ -1,0 +1,11 @@
+{
+  "name": "stripe-spike",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "stripe": "23.2.0"
+  }
+}
