@@ -26,6 +26,7 @@
 | 領域 | 技術 | 状態 |
 |---|---|---|
 | アプリケーション | Next.js(App Router)、TypeScript | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))) |
+| 画面の見た目 | Tailwind CSS | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))) |
 | データベース・認証・ファイルの保存 | Supabase(PostgreSQL、認証、行レベルセキュリティ、ファイルの保存) | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))) |
 | 決済 | Stripe(Connect のダイレクト支払い) | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))、ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))) |
 | ホスティング | Vercel(開発、検証、本番) | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))) |

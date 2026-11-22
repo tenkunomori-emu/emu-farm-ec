@@ -31,11 +31,12 @@
 
 ### 1. 技術の選定
 
-Next.js(App Router)、TypeScript、Supabase、Stripe を使う。
+Next.js(App Router)、TypeScript、Tailwind CSS、Supabase、Stripe を使う。
 
 | 技術 | 今の要件での理由 |
 |---|---|
 | Next.js(App Router)、TypeScript | 商品の一覧、商品ページ、生産者のページを、サーバーで作って送れる(NFR-017、基本設計書の SYS-016)。お金の額の計算と、権限の確かめを、サーバーの処理に置ける(NFR-011、SYS-018、SYS-019)。1つのアプリの中を、モジュールに分けて作る(SYS-033〜SYS-042) |
+| Tailwind CSS | 生産者と購入者の画面を、スマートフォンの幅で使えるように作る(NFR-018、NFR-019)。画面の幅ごとの見た目を、HTML の中で指定できる。見た目の決まりを1つの設定ファイルにまとめ、画面ごとにばらつかないようにできる |
 | Supabase(PostgreSQL、認証、ファイルの保存) | 注文と在庫のように、同時に変える書き込みを、トランザクションで行える(この ADR の決定3)。行ごとに、読み書きできる人を限れる(SYS-018 の二重の守り)。写真を、ブラウザから直接送れ、見てよい人にだけ期限のある URL を出せる(SYS-025) |
 | Stripe | 代金を、生産者の Stripe のアカウントで直接受け取り、管理者はアプリケーション手数料だけを受け取る(ADR-0004([0004-stripe-connect-direct-charges.md](0004-stripe-connect-direct-charges.md)))。注文のときに仮押さえし、生産者の操作で確定できる(ADR-0005([0005-stripe-account-holds-and-refunds.md](0005-stripe-account-holds-and-refunds.md)))。生産者の登録と不審請求の証拠を、サイトの中の部品で扱える(ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](0009-stripe-account-onboarding-and-spike-results.md))) |
 
