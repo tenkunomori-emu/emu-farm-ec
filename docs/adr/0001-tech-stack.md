@@ -1,7 +1,7 @@
 # ADR-0001: 技術スタックの選定
 
 - 日付: 2026-10-22
-- ステータス: 提案
+- ステータス: 置き換え済み(2026-11-22。ADR-0010([0010-tech-stack-hosting-and-db-functions.md](0010-tech-stack-hosting-and-db-functions.md)))
 - 更新: Stripe Connect の扱い(理由の3)は、ADR-0004([0004-stripe-connect-direct-charges.md](0004-stripe-connect-direct-charges.md))で、将来の拡張から、フェーズ2から使うものに変えた。
 
 ## 背景
