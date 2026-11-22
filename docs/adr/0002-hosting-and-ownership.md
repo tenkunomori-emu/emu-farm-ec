@@ -1,7 +1,7 @@
 # ADR-0002: ホスティング・ドメイン・引き渡し方針
 
 - 日付: 2026-10-23
-- ステータス: 提案(ホスティングの最終選定は、引き渡しの前に行う)
+- ステータス: 置き換え済み(2026-11-22。ADR-0010([0010-tech-stack-hosting-and-db-functions.md](0010-tech-stack-hosting-and-db-functions.md)))
 
 ## 背景
 
