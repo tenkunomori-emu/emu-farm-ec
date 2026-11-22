@@ -22,7 +22,7 @@
 
 ### システム構成図
 
-MVP のシステムは、Vercel で動かす1つの Next.js のアプリと、外部のサービス(Supabase、Stripe、メールを送るサービス、アクセス解析)でできている。
+MVP のシステムは、Vercel で動かす1つの Next.js のアプリと、外部のサービス(Supabase、Stripe、メールを送るサービス、アクセス解析)でできている。技術の選定と、本番の置き場所は、ADR-0010([0010-tech-stack-hosting-and-db-functions.md](adr/0010-tech-stack-hosting-and-db-functions.md))で決めた。
 
 ```mermaid
 flowchart LR
