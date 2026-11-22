@@ -19,33 +19,22 @@
 | テスト・品質確認 | テスト仕様書と結果、対応表のテストの列(04-test.md) | 未着手 |
 | リリース・運用 | 運用設計書と操作手順書(05-operations.md) | 未着手 |
 
-工程をまたぐ技術の判断は、ADR に残しています: ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))(技術の選定)、ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md))(ホスティングと引き渡し)、ADR-0003([0003-ai-review.md](docs/adr/0003-ai-review.md))(AI のレビュー)、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))(ダイレクト支払い)、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))(生産者のアカウント、仮押さえと返金)、ADR-0006([0006-one-product-per-order.md](docs/adr/0006-one-product-per-order.md))(1回の注文は1つの商品)、ADR-0007([0007-ai-review-model.md](docs/adr/0007-ai-review-model.md))(AI のレビューのモデル)、ADR-0008([0008-jcb-acceptance.md](docs/adr/0008-jcb-acceptance.md))(JCB の受け付け)、ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))(生産者のアカウントと登録、方式検証の結果)。[決定事項の記録](docs/decisions.md)は過去の記録で、今後は書き加えません。
+工程をまたぐ技術の判断は、ADR に残しています: ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))(技術の選定。ADR-0010 で置き換え済み)、ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md))(ホスティングと引き渡し。ADR-0010 で置き換え済み)、ADR-0003([0003-ai-review.md](docs/adr/0003-ai-review.md))(AI のレビュー)、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))(ダイレクト支払い)、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))(生産者のアカウント、仮押さえと返金)、ADR-0006([0006-one-product-per-order.md](docs/adr/0006-one-product-per-order.md))(1回の注文は1つの商品)、ADR-0007([0007-ai-review-model.md](docs/adr/0007-ai-review-model.md))(AI のレビューのモデル)、ADR-0008([0008-jcb-acceptance.md](docs/adr/0008-jcb-acceptance.md))(JCB の受け付け)、ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))(生産者のアカウントと登録、方式検証の結果)、ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))(技術の選定、本番の置き場所、データベースの関数)。[決定事項の記録](docs/decisions.md)は過去の記録で、今後は書き加えません。
 
-## 技術構成(予定)
+## 技術構成
 
 | 領域 | 技術 | 状態 |
 |---|---|---|
-| アプリケーション | Next.js(App Router)、TypeScript | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
-| データベース・認証 | Supabase(PostgreSQL、Auth、行レベルセキュリティ) | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))) |
-| 決済 | Stripe(Connect のダイレクト支払い) | 決定(ADR-0001([0001-tech-stack.md](docs/adr/0001-tech-stack.md))、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))) |
-| ホスティング | 開発・試作: Vercel / 本番: 検討中 | ADR-0002([0002-hosting-and-ownership.md](docs/adr/0002-hosting-and-ownership.md)) |
+| アプリケーション | Next.js(App Router)、TypeScript | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))) |
+| データベース・認証・ファイルの保存 | Supabase(PostgreSQL、認証、行レベルセキュリティ、ファイルの保存) | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))) |
+| 決済 | Stripe(Connect のダイレクト支払い) | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))、ADR-0004([0004-stripe-connect-direct-charges.md](docs/adr/0004-stripe-connect-direct-charges.md))、ADR-0005([0005-stripe-account-holds-and-refunds.md](docs/adr/0005-stripe-account-holds-and-refunds.md))、ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))) |
+| ホスティング | Vercel(開発、検証、本番) | 決定(ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))) |
 | ソース管理・自動チェック | GitHub(PR、Actions) | 予定 |
 | テスト | 型チェック、単体テスト、E2Eテスト | 予定(品質目標は、要件定義書([01-requirements.md](docs/01-requirements.md))の非機能の要件) |
 
-## 構成図(予定)
+## 構成図
 
-```mermaid
-flowchart LR
-  V["来訪者・購入者"] --> APP
-  M["運営メンバー<br/>(管理画面)"] --> APP
-  APP["Webアプリ<br/>Next.js + TypeScript"] --> DB[("Supabase<br/>PostgreSQL / 認証 / RLS")]
-  APP --> ST["Stripe<br/>決済"]
-  ST -- "決済結果の通知(Webhook)" --> APP
-  GH["GitHub<br/>PR / 自動チェック"] --> HOST["ホスティング<br/>開発: Vercel / 本番: 検討中"]
-  HOST --> APP
-```
-
-技術構成と構成図は、要件定義の時点での方針です。基本設計で詳細化します。
+システムの構成図と、構成要素ごとの受け持ちは、基本設計書([02-basic-design.md](docs/02-basic-design.md#システム構成図))の「システム構成図」にあります。
 
 ## このリポジトリの目的
 
