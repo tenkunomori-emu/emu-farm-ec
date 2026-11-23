@@ -108,6 +108,7 @@
 | `TRN-` | 基本設計書の「状態遷移と、決済と送金の流れ」の遷移と条件 | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | TRN-001 |
 | `SYS-` | 基本設計書の「システム構成と技術の分担」の項目 | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | SYS-001 |
 | `ENT-` | 基本設計書の「論理データ」の実体 | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | ENT-001 |
+| `AUTH-` | 基本設計書の「認証と認可」の決まり | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | AUTH-001 |
 
 - 一度付けた ID は、項目が解決しても変えない。別の項目に使い回さない。
 - 解決した項目は、行を消さずに残し、「確定」と書く。
