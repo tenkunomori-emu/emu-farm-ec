@@ -18,7 +18,7 @@
 | 選択肢 | 確かめた事実 | 判断 |
 |---|---|---|
 | ブラウザが公開してよい鍵を持ち、Supabase の認証を直接呼ぶ | 公開してよい鍵は、ブラウザに渡すことを前提にした鍵で、だれでも読める(Supabase の公式ページ「API keys」)。サイトを通さない呼び出しを止められない | 採らない |
-| **Supabase の鍵をサイトのサーバーにだけ置き、サーバーから呼ぶ** | 鍵のない求めは、Supabase の窓口が通さない(Supabase の公式ページ「New API Keys and Asymmetric Authentication」「JWT Signing Keys」)。サーバーから秘密の鍵で呼び、利用者の IP アドレスを渡せば、Supabase の認証の、IP アドレスごとの回数の制限も、利用者ごとに効く(Supabase の公式ページ「Rate limits」) | **採用** |
+| **Supabase の鍵をサイトのサーバーにだけ置き、サーバーから呼ぶ** | 鍵のない求めは、Supabase の窓口が通さない(Supabase の公式ページ「JWT Signing Keys」)。サーバーから秘密の鍵で呼び、利用者の IP アドレスを渡せば、Supabase の認証の、IP アドレスごとの回数の制限も、利用者ごとに効く(Supabase の公式ページ「Rate limits」) | **採用** |
 
 ### メールのリンク
 
@@ -53,7 +53,7 @@
 
 - Supabase の認証のクライアントの初めの使い方(ブラウザから直接呼ぶ形)を使わないため、登録、ログイン、2段階認証の画面と処理は、サイトで作る。
 - 鍵が漏れたときは、その鍵を消して作り直す。漏れた鍵で呼ばれる間に備え、Supabase の認証の、新しい登録を受け付ける設定は切る(AUTH-005)。
-- 実装のテストで確かめること: 鍵と一緒に利用者のアクセストークンを送ったとき、データベースの行ごとの決まりが、その利用者として効くか。新しい登録を受け付ける設定を切っても、管理用の操作でアカウントを作れるか。Supabase の認証のメールを、送り先を置き換える仕組み(Send Email Hook)で止められるか。Supabase の認証のアカウントを消したあと、同じメールアドレスで、すぐに新しいアカウントを作れるか。
+- 実装のテストで確かめること: 鍵のない求めを、Supabase の認証とデータの口が通さないか。鍵を持たないブラウザから、サイトが出した URL で、写真を送り、見られるか(SYS-025)。鍵と一緒に利用者のアクセストークンを送ったとき、データベースの行ごとの決まりが、その利用者として効くか。新しい登録を受け付ける設定を切っても、管理用の操作でアカウントを作れるか。Supabase の認証のメールを、送り先を置き換える仕組み(Send Email Hook)で止められるか。Supabase の認証のアカウントを消したあと、同じメールアドレスで、すぐに新しいアカウントを作れるか。
 
 ## 合意の記録
 
@@ -62,10 +62,10 @@
 ## 参考にした情報
 
 - [Supabase: API keys](https://supabase.com/docs/guides/getting-started/api-keys)
-- [Supabase: New API Keys and Asymmetric Authentication](https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys)
 - [Supabase: JWT Signing Keys](https://supabase.com/docs/guides/auth/signing-keys)
 - [Supabase: Rate limits](https://supabase.com/docs/guides/auth/rate-limits)
 - [Supabase: Auth Hooks](https://supabase.com/docs/guides/auth/auth-hooks)
 - [Supabase: Multi-Factor Authentication](https://supabase.com/docs/guides/auth/auth-mfa)
 - [Supabase: Passkey authentication](https://supabase.com/docs/guides/auth/passkeys)
 - [Supabase: Signing out](https://supabase.com/docs/guides/auth/signout)
+- [Supabase: createSignedUploadUrl](https://supabase.com/docs/reference/javascript/file-buckets-createsigneduploadurl)
