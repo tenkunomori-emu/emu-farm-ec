@@ -10,6 +10,7 @@
 // 動かし方(spikes/stripe のフォルダーで):
 //   node --env-file=.env embedded/checkout-server.ts <生産者のアカウントの ID>
 //   止める指定を付けないとき(Link にカードを保存するとき): 最後に noblock を付ける。
+//   領収書の言語を確かめるとき: 最後に ja(Checkout Session に locale: "ja")か、jacustomer(言語に ja を指定した Customer を付ける)を付ける。
 // そのあと、ブラウザーで http://localhost:4245 を開く。
 
 import Stripe from "stripe";
@@ -24,8 +25,8 @@ if (!secretKey.startsWith("sk_test_") || !publishableKey.startsWith("pk_test_"))
   console.error(".env に、サンドボックスの鍵(sk_test_ と pk_test_ で始まるもの)を入れてください。");
   process.exit(1);
 }
-if (!accountId.startsWith("acct_") || (option !== "" && option !== "noblock")) {
-  console.error("引数は「<acct_...>」か「<acct_...> noblock」にしてください。");
+if (!accountId.startsWith("acct_") || !["", "noblock", "ja", "jacustomer"].includes(option)) {
+  console.error("引数は「<acct_...>」か、そのあとに noblock、ja、jacustomer のどれかを付けた形にしてください。");
   process.exit(1);
 }
 
@@ -72,6 +73,8 @@ const server = createServer(async (req, res) => {
   if (req.method === "POST" && url.pathname === "/session") {
     try {
       const expiresAt = Math.floor(Date.now() / 1000) + 60 * 60;
+      const customer =
+        option === "jacustomer" ? await stripe.customers.create({ preferred_locales: ["ja"] }, onAccount) : null;
       const session = await stripe.checkout.sessions.create(
         {
           mode: "payment",
@@ -98,10 +101,13 @@ const server = createServer(async (req, res) => {
             : {}),
           expires_at: expiresAt,
           return_url: "http://localhost:4245/?returned=1",
+          ...(option === "ja" ? { locale: "ja" as const } : {}),
+          ...(customer ? { customer: customer.id } : {}),
         },
         onAccount,
       );
       console.log("購入手続き(Checkout Session)を作った:", session.id);
+      console.log("  領収書の言語の指定:", option === "ja" ? "locale ja" : customer ? `Customer ${customer.id}(ja)` : "なし");
       console.log("  期限:", new Date((session.expires_at ?? 0) * 1000).toISOString(), "/ 止める指定:", JSON.stringify(session.payment_method_options?.card?.restrictions ?? null));
       sendJson(res, 200, { id: session.id, client_secret: session.client_secret });
     } catch (err) {
