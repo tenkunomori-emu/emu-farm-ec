@@ -69,6 +69,7 @@
   - 生産者のアカウントの状態の知らせ(IF-053 の v2 の形)に、テストが署名を付けられるか。付けられないときは、その知らせだけ、検証の環境の E2E テストで確かめる。
   - サンドボックスで、返金が失敗に変わることと、仮押さえの失効を、起こせるか。起こせないものは、単体テストで、置き換えた Stripe で起こす(TST-031)。
   - 仮押さえを使う結合テストに、かかる時間。
+  - CI で動かすアプリで、Vercel の BotID(AUTH-042)が、開発のときと同じく、すべての求めを通すか。通さないときは、CI の E2E テストにも、検証の環境と同じ、テストの求めを通す設定を使う。
 
 ## 合意の記録
 
@@ -80,3 +81,5 @@
 - [Stripe: Manage sandboxes](https://docs.stripe.com/sandboxes/dashboard/manage)
 - [Stripe: Testing webhook endpoints](https://docs.stripe.com/automated-testing/webhooks)
 - [Stripe: Build a custom checkout page](https://docs.stripe.com/checkout/custom/quickstart)
+- [Vercel: BotID Local Development Behavior](https://vercel.com/docs/botid/local-development-behavior)
+- [Vercel: Protection Bypass for Automation](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation)
