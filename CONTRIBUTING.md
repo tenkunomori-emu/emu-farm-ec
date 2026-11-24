@@ -111,6 +111,7 @@
 | `AUTH-` | 基本設計書の「認証と認可」の決まり | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | AUTH-001 |
 | `IF-` | 基本設計書の「外部連携と知らせ」の決まりと、知らせの一覧 | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | IF-001 |
 | `SCR-` | 基本設計書の「画面一覧と画面遷移」の画面と決まり | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | SCR-001 |
+| `OPS-` | 基本設計書の「非機能と運用の方式」の決まりと、処理の一覧 | 3桁 | 基本設計書([02-basic-design.md](docs/02-basic-design.md)) | OPS-001 |
 
 - 一度付けた ID は、項目が解決しても変えない。別の項目に使い回さない。
 - 解決した項目は、行を消さずに残し、「確定」と書く。
