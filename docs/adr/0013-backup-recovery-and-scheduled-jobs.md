@@ -48,7 +48,7 @@
 
 1. バックアップは、Supabase が毎日取るバックアップを使い、Supabase の外に写しは持たない(OPS-014、OPS-017)。
 2. 戻すときは、同じプロジェクトに戻すことを第一にする。別のプロジェクトに戻したときに作り直すものを、基本設計書に表にした。Supabase の設定は、リポジトリに置いた設定から作り直せるようにする(OPS-015、OPS-016)。
-3. 戻す操作の前から、戻したあとの処理が終わるまで、サイトをメンテナンス中にする。戻したあと、すべてのログインの状態を終わらせ、復旧の突き合わせを行い、定期の突き合わせを1回行ってから、メンテナンス中を解く(OPS-018〜OPS-021)。
+3. 戻す操作の前から、戻したあとの処理が終わるまで、サイトをメンテナンス中にする。戻したあと、すべてのログインの状態を終わらせ、復旧の突き合わせと、定期の突き合わせを1回行う。そのあと、メールを送るサービスに残る、失った間に送ったメールの一覧をもとに、保守を担う開発者が、失った間の退会をやり直し、管理者の画面だけを使えるようにして、オーナーが、失った間の停止、非公開、スタッフを外す操作をやり直してから、メンテナンス中を解く(OPS-018〜OPS-021)。このために、会員が退会したときに、退会を受け付けた知らせを送る(IF-110、AUTH-034)。
 4. 復旧の突き合わせは、支払いに付けた、購入手続きを見分ける ID の注文が、サイトの記録にない支払いを扱う。確定していなければ、仮押さえを取り消して、購入者と生産者に知らせ(TRN-003)、確定していれば、Stripe から読んだ値と、その支払いの返金、不審請求で、復旧した注文を作る(TRN-062、OPS-020、OPS-022〜OPS-026)。このため、支払いに、購入手続きを見分ける ID に加えて、商品の ID を付ける(SYS-012、IF-021)。
 5. 開発、検証、本番で、Stripe、Supabase、メールを送るサービスの鍵を分ける。本番でない環境に Stripe の本番の鍵が置かれているときは、アプリは Stripe を呼ばない。本番の記録を、開発と検証の環境に写さない(OPS-006〜OPS-013)。
 6. 期限で動く処理は、5分ごと、1時間ごと、1日1回の3つの間隔で、本番だけで動かす(OPS-029〜OPS-043)。
@@ -65,6 +65,7 @@
   - 復旧の突き合わせで、Checkout Session と支払いから、OPS-026 の値を、すべて読めるか。
   - きっかけが、同じ回を2度呼ぶことと、失敗した回をやり直すことがあるか(OPS-032)。
   - 本番でない環境に、Stripe の本番の鍵を置いたときに、アプリが Stripe を呼ばないこと(OPS-010)。
+  - メールを送るサービスが、送ったメールの一覧を、8日以上残すか。一覧から、知らせの種類(退会、停止、非公開)を見分けられるか(OPS-021)。
   - 変換した商品の写真が、Vercel の側にいつまで残るか(OPS-002、OPS-004)。
 - リリースの前に確かめること: 同じプロジェクトにバックアップを戻すのにかかる時間と、運用設計書の手順で、別のプロジェクトにサイトを戻し、24時間以内に終わること(NFR-020、NFR-021 の検証方法)。
 - 事業が大きくなる途中で変えるもの(Issue に残す): 秒単位で戻せる追加の機能。Supabase の外の写し。
@@ -80,6 +81,9 @@
 - [Supabase: Managing Environments](https://supabase.com/docs/guides/deployment/managing-environments)
 - [Stripe: List all PaymentIntents](https://docs.stripe.com/api/payment_intents/list)
 - [Stripe: The Checkout Session object](https://docs.stripe.com/api/checkout/sessions/object)
+- [Stripe: Retrieve a Checkout Session's line items](https://docs.stripe.com/api/checkout/sessions/line_items)
 - [Stripe: API keys](https://docs.stripe.com/keys)
 - [Vercel: Managing Cron Jobs](https://vercel.com/docs/schedules/cron-jobs/manage-cron-jobs)
 - [Vercel: Image Optimization](https://vercel.com/docs/image-optimization)
+- [Vercel: Managing environment variables across environments](https://vercel.com/docs/environment-variables/manage-across-environments)
+- [Resend: List Sent Emails](https://resend.com/docs/api-reference/emails/list-emails)
