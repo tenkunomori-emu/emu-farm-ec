@@ -2,7 +2,7 @@
 
 生産者が出店し、購入者が生産者から直接買うマーケットプレイスです。代金は、購入者から各生産者の Stripe のアカウントに直接入り、管理者はアプリケーション手数料だけを受け取ります。
 
-> ステータス: **作り直し中**。要件定義書([01-requirements.md](docs/01-requirements.md))は、マーケットプレイスの要件定義書として確定し、基本設計で決めたことに合わせて直した版も確定しました。基本設計書(02-basic-design.md)を、確定した要件定義書をもとに書き直しています。実装は未着手です。各文書の版と状態は、下の「工程と成果物」の表のとおりです。
+> ステータス: **作り直し中**。要件定義書([01-requirements.md](docs/01-requirements.md))は、マーケットプレイスの要件定義書として確定し、基本設計で決めたことに合わせて直した版も確定しました。基本設計書(02-basic-design.md)も、確定した要件定義書をもとに書き直し、確定しました。実装は未着手です。各文書の版と状態は、下の「工程と成果物」の表のとおりです。
 
 ## 工程と成果物
 
@@ -12,7 +12,7 @@
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v2.1([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.1) |
-| 基本設計 | 基本設計書 v0.1([02-basic-design.md](docs/02-basic-design.md))、方式検証のコード(spikes/)、要件から設計、テストへの対応表の最初の版(04-test.md。要件の ID と、基本設計の列) | 作成中。基本設計書に、「システム構成と技術の分担」、「状態遷移と、決済と送金の流れ」、「論理データ」、「認証と認可」、「外部連携と知らせ」、「画面一覧と画面遷移」、「非機能と運用の方式」、「結合テストの方針」を書いた。技術の選定と、本番の置き場所を、ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))に記録した。認証の方式を、ADR-0011([0011-auth-server-side-and-site-links.md](docs/adr/0011-auth-server-side-and-site-links.md))に記録した。購入手続きの方式と、Stripe の知らせの扱いを、ADR-0012([0012-checkout-session-and-external-services.md](docs/adr/0012-checkout-session-and-external-services.md))に記録した。方式検証のコード(spikes/stripe/)で、お金の流れの前提を確かめ、結果を ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))に記録した。対応表([04-test.md](docs/04-test.md))は作成中。要件の ID を並べ、基本設計の列は、各章を書く PR で埋める |
+| 基本設計 | 基本設計書 v1.0([02-basic-design.md](docs/02-basic-design.md))、方式検証のコード(spikes/)、要件から設計、テストへの対応表の最初の版(04-test.md。要件の ID と、基本設計の列) | 確定(タグ basic-design-v1.0)。基本設計書に、「システム構成と技術の分担」、「状態遷移と、決済と送金の流れ」、「論理データ」、「認証と認可」、「外部連携と知らせ」、「画面一覧と画面遷移」、「非機能と運用の方式」、「結合テストの方針」を書いた。技術の選定と、本番の置き場所を、ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md))に記録した。認証の方式を、ADR-0011([0011-auth-server-side-and-site-links.md](docs/adr/0011-auth-server-side-and-site-links.md))に記録した。購入手続きの方式と、Stripe の知らせの扱いを、ADR-0012([0012-checkout-session-and-external-services.md](docs/adr/0012-checkout-session-and-external-services.md))に記録した。バックアップと復旧の方式と、期限で動く処理の見守り方を、ADR-0013([0013-backup-recovery-and-scheduled-jobs.md](docs/adr/0013-backup-recovery-and-scheduled-jobs.md))に記録した。結合テストの方式を、ADR-0014([0014-test-approach.md](docs/adr/0014-test-approach.md))に記録した。方式検証のコード(spikes/stripe/)で、お金の流れの前提を確かめ、結果を ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md))と ADR-0012 に記録した。対応表([04-test.md](docs/04-test.md))は、MVP のすべての要件を並べ、基本設計の列を埋めた |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))に足す「開発環境の作り方」の節 | 未着手 |
 | 詳細設計 | 機能ごとのマイグレーション、型、テスト | 未着手 |
 | 実装・単体テスト | コード | 未着手 |
