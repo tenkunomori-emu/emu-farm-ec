@@ -2,3 +2,21 @@
 node_modules/
 .env*
 !.env.example
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# テストの結果
+/coverage
+
+# Vercel
+.vercel
+
+# 鍵のファイル
+*.pem
+
+# npm
+npm-debug.log*
