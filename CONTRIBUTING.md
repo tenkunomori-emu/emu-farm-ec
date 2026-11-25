@@ -180,7 +180,7 @@ npm ci
 | `src/app/` | 画面と、求めを受ける入口(基本設計書([02-basic-design.md](docs/02-basic-design.md))の SYS-050)。入口は、だれの求めかを確かめ、モジュールを呼ぶだけにする |
 | `src/modules/<モジュール>/` | サーバーの処理。基本設計書の「モジュールの境界」の10個のモジュールごとに、1つのフォルダにする(下の表) |
 | `src/lib/` | どのモジュールのデータも持たない、共通の道具 |
-| `supabase/` | 手元の Supabase の設定(`config.toml`)と、データベースのテスト(`tests/database/`) |
+| `supabase/` | Supabase の設定(`config.toml`。手元の Supabase と、検証と本番のプロジェクトの設定の元(基本設計書の OPS-016))と、データベースのテスト(`tests/database/`) |
 | `spikes/` | 方式検証のコード。サイトのコードではなく、型チェックと Lint の対象から外してある |
 
 | フォルダ | モジュール |
