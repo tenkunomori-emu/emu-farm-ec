@@ -14,11 +14,11 @@
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v2.1([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.1) |
-| 基本設計 | 基本設計書 v1.0([02-basic-design.md](docs/02-basic-design.md))、ADR-0009〜ADR-0014、方式検証のコード([spikes/](spikes/))、要件から設計、テストへの対応表(トレーサビリティマトリクス)の最初の版([04-test.md](docs/04-test.md)。MVP のすべての要件と、基本設計の列) | 確定(タグ basic-design-v1.0) |
+| 基本設計 | 基本設計書 v1.0([02-basic-design.md](docs/02-basic-design.md))、ADR-0009〜ADR-0014、方式検証のコード([spikes/](spikes/))、要件から設計、テストへの対応表(トレーサビリティマトリクス)の最初の版([04-test.md](docs/04-test.md)。要件の ID と、基本設計の列) | 確定(タグ basic-design-v1.0) |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「開発環境の作り方」の節 | 作成中 |
 | 詳細設計 | 機能ごとのマイグレーション、型、テスト | 未着手 |
 | 実装・単体テスト | コード | 未着手 |
-| テスト・品質確認 | テスト仕様書と結果、対応表のテストの列(04-test.md) | 未着手 |
+| テスト・品質確認 | テスト仕様書と結果、対応表のテストの列([04-test.md](docs/04-test.md)) | 未着手 |
 | リリース・運用 | 運用設計書と操作手順書(05-operations.md) | 未着手 |
 
 ## 設計の判断(ADR)
