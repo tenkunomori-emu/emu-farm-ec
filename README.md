@@ -14,7 +14,7 @@
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v2.1([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.1) |
-| 基本設計 | 基本設計書 v1.0([02-basic-design.md](docs/02-basic-design.md))、ADR-0009〜ADR-0014、技術検証のコード([spikes/](spikes/))、要件から設計、テストへの対応表(トレーサビリティマトリクス)の最初の版([04-test.md](docs/04-test.md)。MVP のすべての要件と、基本設計の列) | 確定(タグ basic-design-v1.0) |
+| 基本設計 | 基本設計書 v1.0([02-basic-design.md](docs/02-basic-design.md))、ADR-0009〜ADR-0014、方式検証のコード([spikes/](spikes/))、要件から設計、テストへの対応表(トレーサビリティマトリクス)の最初の版([04-test.md](docs/04-test.md)。MVP のすべての要件と、基本設計の列) | 確定(タグ basic-design-v1.0) |
 | 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「開発環境の作り方」の節 | 作成中 |
 | 詳細設計 | 機能ごとのマイグレーション、型、テスト | 未着手 |
 | 実装・単体テスト | コード | 未着手 |
@@ -35,7 +35,7 @@
 | ADR-0006([0006-one-product-per-order.md](docs/adr/0006-one-product-per-order.md)) | 1回の注文は1つの商品 |
 | ADR-0007([0007-ai-review-model.md](docs/adr/0007-ai-review-model.md)) | AI によるコードレビューのモデル |
 | ADR-0008([0008-jcb-acceptance.md](docs/adr/0008-jcb-acceptance.md)) | JCB の受け付け |
-| ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md)) | 生産者の Stripe アカウントの登録、技術検証の結果 |
+| ADR-0009([0009-stripe-account-onboarding-and-spike-results.md](docs/adr/0009-stripe-account-onboarding-and-spike-results.md)) | 生産者の Stripe アカウントの登録、方式検証の結果 |
 | ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md)) | 技術の選定、本番環境のホスティング、データベース関数 |
 | ADR-0011([0011-auth-server-side-and-site-links.md](docs/adr/0011-auth-server-side-and-site-links.md)) | 認証の処理(サーバー側)、メール内のリンク、2段階認証、セッション |
 | ADR-0012([0012-checkout-session-and-external-services.md](docs/adr/0012-checkout-session-and-external-services.md)) | Checkout Session による購入手続き、Stripe の Webhook の処理、メール送信とアクセス解析のサービス |
