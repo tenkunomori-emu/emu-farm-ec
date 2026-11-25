@@ -136,7 +136,7 @@
 
 ### 手元で動かす
 
-入れるもの: Node.js 22(`.nvmrc` と、`package.json` の `engines` で決めてある。22 のほかの版では、`npm ci` が止まる)、npm、Git。
+入れるもの: Node.js 22(`.nvmrc` と、`package.json` の `engines` で決めてある。22 のほかの版では、`npm ci` が止まる)、npm、Git、Docker(手元の Supabase を動かすため。Docker Desktop など)。
 
 ```
 git clone https://github.com/tenkunomori-emu/emu-farm-ec.git
@@ -155,6 +155,25 @@ npm ci
 
 開発中に、ページの左下に、Next.js が「Issue」の表示を出すことがある。このうち、`<html>` や `<body>` に、サイトのコードにない属性が足された、という表示は、ブラウザの拡張機能がページを書き換えたものである。拡張機能の動かないシークレット ウィンドウで開いて、表示が出ないことを確かめる。サイトのコードで表示を消すことはしない(本当のずれも見えなくなるため)。
 
+### 手元の Supabase
+
+開発の環境のデータベース、認証、ファイルの保存は、手元で動かす Supabase を使う(基本設計書の OPS-006)。Supabase CLI は、`npm ci` で、決まった版が入る。Docker を起動してから、次のコマンドを使う。
+
+| すること | コマンド |
+|---|---|
+| Supabase を起動する(初回は、Docker のイメージを取るため、数分かかる) | `npm run db:start` |
+| Supabase を止める(記録は残る) | `npm run db:stop` |
+| データベースのテスト(pgTAP) | `npm run db:test` |
+
+初回は、起動したあとに、URL と鍵を置くファイル `.env.local` を作る。`.env.example` を `.env.local` の名前で写し、`npx supabase status -o env` の表示から、`PUBLISHABLE_KEY` と `SECRET_KEY` の値を写す。`.env.local` は、コミットしない(`.gitignore` で除いてある)。どの値も、ブラウザに渡さない(名前に `NEXT_PUBLIC_` を付けない。基本設計書の AUTH-005)。
+
+- Supabase の設定は、`supabase/config.toml` に置く。新しい登録を受け付けない設定(`[auth]` の `enable_signup = false`。基本設計書の AUTH-005)は、変えない。
+- 新しい表、ビュー、シーケンス、関数は、権限(GRANT)を書くまで、データの口から届かない。既定で付く権限を、`supabase/config.toml` の `[api]` の `auto_expose_new_tables = false` と、最初のマイグレーション(`supabase/migrations/` の、名前が `default_privileges` で終わるファイル)で外してあり、届かないことを、`supabase/tests/database/default_privileges.test.sql` が確かめる(設定の値そのものは、確かめない)。この3つは、変えない。使う立場(`anon`、`authenticated`、`service_role`)への GRANT を、その表や関数を作るマイグレーションに書く。使わない立場には、書かない。行ごとの決まり(RLS)やビューの中で呼ぶ関数は、その求めの立場が使う、として扱う(関数の実行の権限は、`public` 以外のスキーマでも、既定では付かない)。
+- データベースのテストは、`supabase/tests/database/` に、`<名前>.test.sql` の名前で置く。
+- `SUPABASE_` で始まる環境変数と、`.env.local` などのファイルの値は、`supabase/config.toml` の設定より優先される(Supabase の公式ページ「Migrating to Supabase CLI v3」)。`.env.local` には、`.env.example` にある項目のほかに、`SUPABASE_` で始まる項目を足さない。
+- 手元の Supabase は、決まったポート(54321 など。`supabase/config.toml` にある)を使う。ほかのプロジェクトの手元の Supabase が動いていると、起動できない。そのプロジェクトのフォルダで止めてから、起動する。
+- 手元の Supabase は、同じネットワークのほかの機器からも届き、鍵は、だれの手元でも同じ値である。外のネットワーク(店の Wi-Fi など)では、動かしたままにしない。本番の記録は、置かない(基本設計書の OPS-013)。
+
 ### フォルダの決まり
 
 | フォルダ | 置くもの |
@@ -162,6 +181,7 @@ npm ci
 | `src/app/` | 画面と、求めを受ける入口(基本設計書([02-basic-design.md](docs/02-basic-design.md))の SYS-050)。入口は、だれの求めかを確かめ、モジュールを呼ぶだけにする |
 | `src/modules/<モジュール>/` | サーバーの処理。基本設計書の「モジュールの境界」の10個のモジュールごとに、1つのフォルダにする(下の表) |
 | `src/lib/` | どのモジュールのデータも持たない、共通の道具 |
+| `supabase/` | Supabase の設定(`config.toml`。手元の Supabase と、検証と本番のプロジェクトの設定の元(基本設計書の OPS-016))、マイグレーション(`migrations/`)、データベースのテスト(`tests/database/`) |
 | `spikes/` | 方式検証のコード。サイトのコードではなく、型チェックと Lint の対象から外してある |
 
 | フォルダ | モジュール |
