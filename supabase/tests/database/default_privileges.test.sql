@@ -1,6 +1,6 @@
 -- 権限(GRANT)を書いていない表、シーケンス、関数が、データの口の立場から届かないことを確かめる。
--- supabase/config.toml の auto_expose_new_tables = false か、既定の権限を外すマイグレーションが
--- 外れると、このテストが通らなくなる。
+-- 既定の権限を外すマイグレーションが外れると、このテストが通らなくなる。
+-- supabase/config.toml の auto_expose_new_tables の値そのものは、このテストでは確かめない。
 begin;
 select plan(10);
 
