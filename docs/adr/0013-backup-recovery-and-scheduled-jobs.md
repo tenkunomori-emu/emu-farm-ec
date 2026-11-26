@@ -76,7 +76,7 @@
 2. 記録の一部が壊れたときは、本番のデータベースを上書きせず、別のプロジェクトに戻して、壊れた記録だけを本番に写す。全体を失ったときは、同じプロジェクトに戻す。別のプロジェクトを本番の代わりに使うときに作り直すものを、基本設計書に表にした。Supabase の設定は、リポジトリに置いた設定から作り直せるようにする(OPS-015、OPS-016)。
 3. 同じプロジェクトに戻すときは、戻す操作の前から、戻したあとの処理が終わるまで、サイトをメンテナンス中にする。戻したあと、すべてのログインの状態を終わらせ、復旧の突き合わせと、定期の突き合わせを1回行ってから、メンテナンス中を解く(OPS-018〜OPS-021)。
 4. 復旧の突き合わせは、支払いに付けた、購入手続きを見分ける ID の注文が、サイトの記録にない支払いを扱う。確定していなければ、仮押さえを取り消して、購入者と生産者に知らせ(TRN-003)、確定していれば、Stripe から読んだ値と、その支払いの返金、不審請求で、復旧した注文を作る(TRN-062、OPS-020、OPS-022〜OPS-026)。このため、支払いに、購入手続きを見分ける ID に加えて、商品の ID を付ける(SYS-012、IF-021)。
-5. 開発、検証、本番で、Stripe、Supabase、メールを送るサービスの鍵を分ける。本番でない環境に Stripe の本番の鍵が置かれているときは、アプリは Stripe を呼ばない。本番の記録を、開発と検証の環境に写さない(OPS-006〜OPS-013)。検証環境は、本番と別の Vercel プロジェクトにする。検証のプロジェクトの Deployment Protection は、All Deployments を対象にし、Vercel Authentication を使う。本番のプロジェクトの Deployment Protection は、サイトを公開するまでは All Deployments を対象にし、公開するときに、プレビューのデプロイだけを保護する設定(Standard Protection)に変える。検証のプロジェクトでは、Stripe の Webhook は、Protection Bypass for Automation のシークレットを、Webhook の URL のクエリパラメーターに付けて受ける。このシークレットは、Stripe の Webhook の URL にだけ使い、テストには渡さない(TST-010)。検証のプロジェクトでは、Cron Jobs を無効にする。別のプロジェクトでは、`VERCEL_ENV` が検証環境でも `production` になるため、環境の判別には使わず、サイトの環境変数(`APP_ENV`)で判別する。`APP_ENV` が設定されていないとき、または決めた値でないときは、アプリは Stripe を呼ばない(OPS-010)。
+5. 開発、検証、本番で、Stripe、Supabase、メールを送るサービスの鍵を分ける。本番でない環境に Stripe の本番の鍵が置かれているときは、アプリは Stripe を呼ばない。本番の記録を、開発と検証の環境に写さない(OPS-006〜OPS-013)。検証環境は、本番と別の Vercel プロジェクトにする。検証のプロジェクトの Deployment Protection は、All Deployments を対象にし、Vercel Authentication を使う。本番のプロジェクトの Deployment Protection は、サイトを公開するまでは All Deployments を対象にし、公開するときに、本番のドメインを除いて、すべてのデプロイを保護する設定(Standard Protection)に変える。検証のプロジェクトでは、Stripe の Webhook は、Protection Bypass for Automation のシークレットを、Webhook の URL のクエリパラメーターに付けて受ける。このシークレットは、Stripe の Webhook の URL にだけ使い、テストには渡さない(TST-010)。検証のプロジェクトでは、Cron Jobs を無効にする。別のプロジェクトでは、`VERCEL_ENV` が検証環境でも `production` になるため、環境の判別には使わず、サイトの環境変数(`APP_ENV`)で判別する。`APP_ENV` が設定されていないとき、または決めた値でないときは、アプリは Stripe を呼ばない(OPS-010)。
 6. 期限で動く処理は、5分ごと、1時間ごと、1日1回の3つの間隔で、本番だけで動かす(OPS-029〜OPS-043)。`vercel.json` の `crons`(Cron Jobs)で設定する。Schedules は採用しない。
 7. 外部の監視のサービスを1つ使い、処理を終えた合図と失敗の合図を送る。製品は、Healthchecks.io にする。アカウントの作成、チェックと通知先の設定は、リリース・運用の工程で行う(OPS-044〜OPS-049)。
 
@@ -117,6 +117,7 @@
 - [Vercel: Managing Cron Jobs](https://vercel.com/docs/schedules/cron-jobs/manage-cron-jobs)
 - [Vercel: Image Optimization](https://vercel.com/docs/image-optimization)
 - [Vercel: Managing environment variables across environments](https://vercel.com/docs/environment-variables/manage-across-environments)
+- [Vercel: Deployment Protection on Vercel](https://vercel.com/docs/deployment-protection)
 - [Vercel: Protection Bypass for Automation](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation)
 - [Vercel: Bypass Deployment Protection for testing, sharing, and automation](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection)
 - [Vercel: Restrict access to deployments with Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication)
