@@ -108,4 +108,4 @@ jobs:
           rm gitleaks.tar.gz
       # PR のすべてのコミットを調べる(あとのコミットで削除したシークレットも検出する)。
       # 設定は .gitleaks.toml。ログは公開されるため、検出した値は --redact で伏せる。
-      - run: '"$RUNNER_TEMP/gitleaks" git --no-banner --redact --log-opts="${BASE_SHA}..${HEAD_SHA}"'
+      - run: '"$RUNNER_TEMP/gitleaks" git --no-banner --redact --verbose --log-opts="${BASE_SHA}..${HEAD_SHA}"'
