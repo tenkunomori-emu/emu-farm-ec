@@ -152,6 +152,8 @@ npm ci
 | サイトを起動する(http://localhost:3000) | `npm run dev` |
 | 型チェック | `npm run typecheck` |
 | Lint | `npm run lint` |
+| 書式を整える(Prettier) | `npm run format` |
+| 書式を確認する | `npm run format:check` |
 | 単体テスト | `npm test` |
 
 開発中に、ページの左下に、Next.js が「Issue」の表示を出すことがある。このうち、`<html>` や `<body>` に、サイトのコードにない属性が足された、という表示は、ブラウザの拡張機能がページを書き換えたものである。拡張機能の動かないシークレット ウィンドウで開いて、表示が出ないことを確かめる。サイトのコードで表示を消すことはしない(本当のずれも見えなくなるため)。
@@ -183,7 +185,7 @@ npm ci
 | `src/modules/<モジュール>/` | サーバーの処理。基本設計書の「モジュールの境界」の10個のモジュールごとに、1つのフォルダにする(下の表) |
 | `src/lib/` | どのモジュールのデータも持たない、共通の道具 |
 | `supabase/` | Supabase の設定(`config.toml`。手元の Supabase と、検証と本番のプロジェクトの設定の元(基本設計書の OPS-016))、マイグレーション(`migrations/`)、データベースのテスト(`tests/database/`) |
-| `spikes/` | 方式検証のコード。サイトのコードではなく、型チェックと Lint の対象から外してある |
+| `spikes/` | 方式検証のコード。サイトのコードではなく、型チェック、Lint、書式の確認の対象から外してある |
 
 | フォルダ | モジュール |
 |---|---|
@@ -339,6 +341,8 @@ PR を下書きから「Ready for review」にすると、AI がレビューの�
   - 最新のコミットで、`typecheck`、`lint`、`test`、`build`、`dependency-review`、`secret-scan` のチェックが成功している
   - 未解決のスレッドがない
   - PR のブランチが、今の `main` を含んでいる
+
+`lint` のチェックは、Lint(`npm run lint`)と書式の確認(`npm run format:check`)を実行する。書式は Prettier で統一する。PR を作る前に、`npm run format` で書式を整える。
 
 ### セキュリティのチェック
 

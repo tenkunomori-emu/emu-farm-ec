@@ -41,7 +41,9 @@ for (let i = 0; i < lines.length; i++) {
   for (; j < lines.length && isTableLine(lines[j]); j++) {
     const cells = countCells(lines[j]);
     if (cells !== headerCells) {
-      errors.push(`${j + 1}行目: 列の数が ${cells} です。表の見出し(${headerLine}行目)は ${headerCells} 列です。`);
+      errors.push(
+        `${j + 1}行目: 列の数が ${cells} です。表の見出し(${headerLine}行目)は ${headerCells} 列です。`,
+      );
     }
     const id = firstCell(lines[j]).match(/^(FR|TBD)-\d{3}$/);
     if (id) {
@@ -50,7 +52,9 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
   if (hasRequirement && headerCells !== REQUIREMENT_COLUMNS) {
-    errors.push(`${headerLine}行目: 要件の表の見出しが ${headerCells} 列です。「この文書の書き方」の ${REQUIREMENT_COLUMNS} 列にします。`);
+    errors.push(
+      `${headerLine}行目: 要件の表の見出しが ${headerCells} 列です。「この文書の書き方」の ${REQUIREMENT_COLUMNS} 列にします。`,
+    );
   }
   i = j - 1;
 }
@@ -59,13 +63,17 @@ for (let i = 0; i < lines.length; i++) {
 const seen = new Map();
 defined.FR.forEach(({ id, line }, index) => {
   if (seen.has(id)) {
-    errors.push(`${line}行目: ${id} が重なっています(${seen.get(id)}行目と同じ)。`);
+    errors.push(
+      `${line}行目: ${id} が重なっています(${seen.get(id)}行目と同じ)。`,
+    );
   } else {
     seen.set(id, line);
   }
   const expected = `FR-${String(index + 1).padStart(3, "0")}`;
   if (id !== expected) {
-    errors.push(`${line}行目: ${id} の位置には ${expected} が来るはずです。ID は書いた順に付け、表の最後に足します。`);
+    errors.push(
+      `${line}行目: ${id} の位置には ${expected} が来るはずです。ID は書いた順に付け、表の最後に足します。`,
+    );
   }
 });
 
@@ -74,7 +82,9 @@ const exists = new Set([...defined.FR, ...defined.TBD].map(({ id }) => id));
 lines.forEach((line, index) => {
   for (const ref of line.match(/\b(?:FR|TBD)-\d{3}\b/g) ?? []) {
     if (!exists.has(ref)) {
-      errors.push(`${index + 1}行目: ${ref} を指していますが、その ID の行がありません。`);
+      errors.push(
+        `${index + 1}行目: ${ref} を指していますが、その ID の行がありません。`,
+      );
     }
   }
 });
@@ -84,4 +94,6 @@ if (errors.length > 0) {
   for (const e of errors) console.error(`- ${e}`);
   process.exit(1);
 }
-console.log(`${file}: 問題はありません(FR- ${defined.FR.length} 行、TBD- ${defined.TBD.length} 行)。`);
+console.log(
+  `${file}: 問題はありません(FR- ${defined.FR.length} 行、TBD- ${defined.TBD.length} 行)。`,
+);
