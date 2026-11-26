@@ -1,0 +1,17 @@
+# gitleaks の設定。CI の secret-scan ジョブが読む(.github/workflows/ci.yml)。
+# 既定のルールが検出しない2つのシークレットを、ルールとして追加する。
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "stripe-webhook-signing-secret"
+description = "Stripe の Webhook 署名シークレット"
+regex = '''\b(whsec_[a-zA-Z0-9]{24,})\b'''
+keywords = ["whsec_"]
+
+[[rules]]
+id = "supabase-secret-key"
+description = "Supabase のシークレットキー"
+regex = '''\b(sb_secret_[a-zA-Z0-9_-]{20,})'''
+keywords = ["sb_secret_"]

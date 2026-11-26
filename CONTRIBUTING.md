@@ -336,6 +336,21 @@ PR を下書きから「Ready for review」にすると、AI がレビューの�
 - マージには、次の5つが必要
   - 最新のコミットで、`review` のチェックが成功している
   - 最新のコミットで、`requirements` のチェックが成功している
-  - 最新のコミットで、`typecheck`、`lint`、`test` のチェックが成功している
+  - 最新のコミットで、`typecheck`、`lint`、`test`、`build`、`dependency-review`、`secret-scan` のチェックが成功している
   - 未解決のスレッドがない
   - PR のブランチが、今の `main` を含んでいる
+
+### セキュリティのチェック
+
+`build`、`dependency-review`、`secret-scan` は、[.github/workflows/ci.yml](.github/workflows/ci.yml) のジョブで、PR ごとに実行する。
+
+| ジョブ | ツール | 失敗する条件 |
+|---|---|---|
+| `dependency-review` | GitHub の dependency review(`actions/dependency-review-action`) | PR が追加・更新する依存ライブラリに、既知の脆弱性がある。深刻度は問わない。開発用のライブラリも対象にする |
+| `secret-scan` | gitleaks(設定は [.gitleaks.toml](.gitleaks.toml)) | PR のコミットに、シークレット(Stripe のシークレットキー、Webhook の署名シークレット、Supabase のシークレットキーなど)がある |
+| `build` | `npm run build` | ビルドに失敗する。または、ビルド結果に、シークレットの環境変数の値がある |
+
+- 修正版のない脆弱性などで例外にするときは、`dependency-review` ジョブの `allow-ghsas` に勧告の ID を書き、理由をコメントに書く。
+- `secret-scan` が検出したシークレットは、すでに公開されている。コミットを削除するだけにせず、発行元でシークレットを無効にして、作り直す。
+- サーバーで使うシークレットの環境変数を追加するときは、`build` ジョブの `env` に、ダミーの値を追加する。
+- リポジトリの設定で、secret scanning、プッシュ保護、Dependabot alerts を有効にしている。プッシュ保護は、シークレットを含むプッシュを拒否する。Dependabot alerts は、マージ済みの依存ライブラリに、あとから見つかった脆弱性を通知する。
