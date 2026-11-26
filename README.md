@@ -21,7 +21,7 @@
 | テスト・品質確認 | テスト仕様書と結果、対応表のテストの列([04-test.md](docs/04-test.md)) | 未着手 |
 | リリース・運用 | 運用設計書と操作手順書(05-operations.md) | 未着手 |
 
-決済の用語は、用語集([glossary.md](docs/glossary.md))にまとめています。
+決済の用語と、本サイトに固有の用語は、用語集([glossary.md](docs/glossary.md))にまとめています。
 
 ## 設計の判断(ADR)
 
