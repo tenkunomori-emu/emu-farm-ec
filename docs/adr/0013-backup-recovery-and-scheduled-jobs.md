@@ -52,7 +52,7 @@
 
 | 選択肢 | 判断 |
 |---|---|
-| 本番と同じ Vercel プロジェクトに検証環境を置き、Protection Bypass for Automation のシークレットを Webhook の URL に付ける | 採用しない。このシークレットは、プロジェクトのすべてのデプロイで有効である(Vercel の公式ページ「Protection Bypass for Automation」)。Stripe の Webhook のために作るシークレットで、本番の保護も通過できる。保護を通過する設定を本番に置かない決定(TST-010、ADR-0014)と両立しない |
+| 本番と同じ Vercel プロジェクトに検証環境を置き、Protection Bypass for Automation のシークレットを Webhook の URL に付ける | 採用しない。このシークレットは、プロジェクトのすべてのデプロイで有効であり、Deployment Protection に加えて、Vercel のファイアウォールが通常はブロックするリクエストと、ボット対策のチャレンジも通過する(Vercel の公式ページ「Protection Bypass for Automation」)。Stripe の Webhook のために作るシークレットが、本番のサイトでも有効になる。本番のサイトに、保護を通過する手段を作らない(TST-010 の理由と同じ考え方) |
 | 本番と同じ Vercel プロジェクトに検証環境を置き、Deployment Protection Exceptions に検証環境のドメインを登録する | 採用しない。ドメインの全体が公開され、OPS-012 を満たさない。Webhook のパスだけを保護の対象から外す設定はない |
 | **検証環境を、本番と別の Vercel プロジェクトにする** | **採用**。シークレットの有効範囲が、検証のプロジェクトに限られる。環境変数も、プロジェクトの単位で分かれる(OPS-009) |
 
@@ -77,7 +77,7 @@
 3. 同じプロジェクトに戻すときは、戻す操作の前から、戻したあとの処理が終わるまで、サイトをメンテナンス中にする。戻したあと、すべてのログインの状態を終わらせ、復旧の突き合わせと、定期の突き合わせを1回行ってから、メンテナンス中を解く(OPS-018〜OPS-021)。
 4. 復旧の突き合わせは、支払いに付けた、購入手続きを見分ける ID の注文が、サイトの記録にない支払いを扱う。確定していなければ、仮押さえを取り消して、購入者と生産者に知らせ(TRN-003)、確定していれば、Stripe から読んだ値と、その支払いの返金、不審請求で、復旧した注文を作る(TRN-062、OPS-020、OPS-022〜OPS-026)。このため、支払いに、購入手続きを見分ける ID に加えて、商品の ID を付ける(SYS-012、IF-021)。
 5. 開発、検証、本番で、Stripe、Supabase、メールを送るサービスの鍵を分ける。本番でない環境に Stripe の本番の鍵が置かれているときは、アプリは Stripe を呼ばない。本番の記録を、開発と検証の環境に写さない(OPS-006〜OPS-013)。検証環境は、本番と別の Vercel プロジェクトにする。検証のプロジェクトの Deployment Protection は、All Deployments を対象にし、Vercel Authentication を使う。本番のプロジェクトの Deployment Protection は、サイトを公開するまでは All Deployments を対象にし、公開するときに、プレビューのデプロイだけを保護する設定(Standard Protection)に変える。検証のプロジェクトでは、Stripe の Webhook は、Protection Bypass for Automation のシークレットを、Webhook の URL のクエリパラメーターに付けて受ける。このシークレットは、Stripe の Webhook の URL にだけ使い、テストには渡さない(TST-010)。検証のプロジェクトでは、Cron Jobs を無効にする。別のプロジェクトでは、`VERCEL_ENV` が検証環境でも `production` になるため、環境の判別には使わず、サイトの環境変数(`APP_ENV`)で判別する。`APP_ENV` が設定されていないとき、または決めた値でないときは、アプリは Stripe を呼ばない(OPS-010)。
-6. 期限で動く処理は、5分ごと、1時間ごと、1日1回の3つの間隔で、本番だけで動かす(OPS-029〜OPS-043)。`vercel.json` の `crons`(Cron Jobs)で設定する。
+6. 期限で動く処理は、5分ごと、1時間ごと、1日1回の3つの間隔で、本番だけで動かす(OPS-029〜OPS-043)。`vercel.json` の `crons`(Cron Jobs)で設定する。Schedules は採用しない。
 7. 外部の監視のサービスを1つ使い、処理を終えた合図と失敗の合図を送る。製品は、Healthchecks.io にする。アカウントの作成、チェックと通知先の設定は、リリース・運用の工程で行う(OPS-044〜OPS-049)。
 
 ## 影響とリスク
@@ -90,12 +90,12 @@
 - 実装のテストで確かめること:
   - Stripe から、生産者のアカウントの一覧を読む操作の、今の形(Accounts v2)。
   - 復旧の突き合わせで、Checkout Session と支払いから、OPS-026 の値を、すべて読めるか。
-  - きっかけが、同じ回を2度呼ぶことと、失敗した回をやり直すことがあるか(OPS-032)。
   - 本番でない環境に、Stripe の本番の鍵を置いたときに、アプリが Stripe を呼ばないこと(OPS-010)。
   - 変換した商品の写真が、Vercel の側にいつまで残るか(OPS-002、OPS-004)。
 - Cron Jobs は、実行が抜けることと、重複することがあり、失敗した実行は再実行されない(Vercel の公式ページ「Managing Cron Jobs」)。OPS-032 の前提を、公式ドキュメントで確認した。
 - 本番のプロジェクトは、サイトを公開するまで、Deployment Protection の対象を All Deployments にする。この間に、Cron Jobs のリクエストが届くかは、公式ドキュメントに記載がない。本番環境を作るときに確認する。
-- Vercel Authentication で保護した検証環境を開くには、Vercel のアカウントが要る。主催者が受入テストで検証環境を開く方法(アクセスのリクエスト、または Shareable Links)は、検証環境を作るときに決める。
+- 検証のプロジェクトのシークレットは、Webhook のパスだけでなく、検証のプロジェクトのすべてのデプロイの保護を通過できる。シークレットは、Stripe のサンドボックスの Webhook の URL に含まれる。検証用のサンドボックスを開ける人を、検証環境を開いてよい人に限る。検証環境には、本番の記録を置かない(OPS-013)。漏れたときは、シークレットを作り直す。
+- Vercel Authentication で保護した検証環境を開けるのは、アクセスを許可された Vercel のユーザーと、Shareable Link を受け取った人である(Vercel の公式ページ「Restrict access to deployments with Vercel Authentication」)。主催者が受入テストで検証環境を開く方法は、検証環境を作るときに決める。
 - Healthchecks.io が、復旧したときに通知するか(OPS-048)は、公式ドキュメントに明記がない。監視を設定するときに、本番環境で確認する。
 - Healthchecks.io の ping の URL は、シークレットとして扱う(公式ページ「Documentation」)。本番の Vercel プロジェクトの環境変数にだけ置く(SYS-002、OPS-044)。
 - リリースの前に確かめること: 同じプロジェクトにバックアップを戻すのにかかる時間と、運用設計書の手順で、別のプロジェクトにサイトを戻し、24時間以内に終わること(NFR-020、NFR-021 の検証方法)。
@@ -119,6 +119,7 @@
 - [Vercel: Managing environment variables across environments](https://vercel.com/docs/environment-variables/manage-across-environments)
 - [Vercel: Protection Bypass for Automation](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation)
 - [Vercel: Bypass Deployment Protection for testing, sharing, and automation](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection)
+- [Vercel: Restrict access to deployments with Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication)
 - [Vercel: Schedules](https://vercel.com/docs/schedules)
 - [Vercel: Migrating from Cron Jobs to Schedules](https://vercel.com/docs/schedules/migrate-from-cron-jobs)
 - [Healthchecks.io: Documentation](https://healthchecks.io/docs/)
