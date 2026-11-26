@@ -108,5 +108,6 @@ jobs:
           tar -xzf gitleaks.tar.gz -C "$RUNNER_TEMP" gitleaks
           rm gitleaks.tar.gz
       # PR のすべてのコミットを調べる(あとのコミットで削除したシークレットも検出する)。
+      # マージコミットは、衝突の解消などで手を入れた部分だけを調べる(--diff-merges=remerge)。
       # 設定は .gitleaks.toml。ログは公開されるため、検出した値は --redact で伏せる。
-      - run: '"$RUNNER_TEMP/gitleaks" git --no-banner --redact --verbose --log-opts="${BASE_SHA}..${HEAD_SHA}"'
+      - run: '"$RUNNER_TEMP/gitleaks" git --no-banner --redact --verbose --log-opts="--diff-merges=remerge ${BASE_SHA}..${HEAD_SHA}"'
