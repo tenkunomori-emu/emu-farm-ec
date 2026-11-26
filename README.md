@@ -21,6 +21,8 @@
 | テスト・品質確認 | テスト仕様書と結果、対応表のテストの列([04-test.md](docs/04-test.md)) | 未着手 |
 | リリース・運用 | 運用設計書と操作手順書(05-operations.md) | 未着手 |
 
+文書で使う用語は、用語集([glossary.md](docs/glossary.md))にまとめています。
+
 ## 設計の判断(ADR)
 
 工程をまたぐ技術の判断は、ADR に記録しています。[決定事項の記録](docs/decisions.md)は以前の記録で、今後は追記しません。
@@ -39,8 +41,8 @@
 | ADR-0010([0010-tech-stack-hosting-and-db-functions.md](docs/adr/0010-tech-stack-hosting-and-db-functions.md)) | 技術の選定、本番環境のホスティング、データベース関数 |
 | ADR-0011([0011-auth-server-side-and-site-links.md](docs/adr/0011-auth-server-side-and-site-links.md)) | 認証の処理(サーバー側)、メール内のリンク、2段階認証、セッション |
 | ADR-0012([0012-checkout-session-and-external-services.md](docs/adr/0012-checkout-session-and-external-services.md)) | Checkout Session による購入手続き、Stripe の Webhook の処理、メール送信とアクセス解析のサービス |
-| ADR-0013([0013-backup-recovery-and-scheduled-jobs.md](docs/adr/0013-backup-recovery-and-scheduled-jobs.md)) | バックアップと復旧、定期実行の処理と監視 |
-| ADR-0014([0014-test-approach.md](docs/adr/0014-test-approach.md)) | テストの段階とツール、結合テストの方式 |
+| ADR-0013([0013-backup-recovery-and-scheduled-jobs.md](docs/adr/0013-backup-recovery-and-scheduled-jobs.md)) | バックアップと復旧、定期実行ジョブと監視 |
+| ADR-0014([0014-test-approach.md](docs/adr/0014-test-approach.md)) | テストレベルとツール、結合テストの方式 |
 
 ## 技術構成
 
