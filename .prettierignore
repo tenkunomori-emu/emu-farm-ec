@@ -1,0 +1,11 @@
+# Markdown は対象にしない。確定した設計書の表が、書式の変更だけで全行書き換わるため。
+*.md
+
+# npm が生成するファイル
+package-lock.json
+
+# 方式検証のコード。サイトのコードではない。
+spikes/
+
+# このファイルを変更する PR では、AI のレビューが実行されない。
+.github/workflows/claude-review.yml
