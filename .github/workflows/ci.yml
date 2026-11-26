@@ -54,11 +54,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    # 本物のシークレットは使わない。ビルド結果に混入したときに検出できるよう、ダミーの値を入れる。
+    # ブラウザに渡さない環境変数。本物の値は使わない。ビルド結果に混入したときに検出できるよう、ダミーの値を入れる。
     env:
       STRIPE_SECRET_KEY: ci-dummy-stripe-secret-key
       STRIPE_WEBHOOK_SECRET: ci-dummy-stripe-webhook-secret
       SUPABASE_SECRET_KEY: ci-dummy-supabase-secret-key
+      SUPABASE_PUBLISHABLE_KEY: ci-dummy-supabase-publishable-key
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -68,11 +69,11 @@ jobs:
       - run: npm ci
       - run: npm run build
       # サーバーのコードは、環境変数を実行時に読む。ビルド結果に値があれば、
-      # プリレンダリングした HTML か、ブラウザに送る JavaScript にシークレットが入っている(TST-037)。
-      - name: ビルド結果にシークレットの値がないことを確認する
+      # プリレンダリングした HTML か、ブラウザに送る JavaScript に値が入っている(TST-037、AUTH-005)。
+      - name: ビルド結果に環境変数の値がないことを確認する
         run: |
-          if grep -rlF -e "$STRIPE_SECRET_KEY" -e "$STRIPE_WEBHOOK_SECRET" -e "$SUPABASE_SECRET_KEY" .next; then
-            echo "::error::ビルド結果にシークレットの値が含まれています。上のファイルを確認してください。"
+          if grep -rlF -e "$STRIPE_SECRET_KEY" -e "$STRIPE_WEBHOOK_SECRET" -e "$SUPABASE_SECRET_KEY" -e "$SUPABASE_PUBLISHABLE_KEY" .next; then
+            echo "::error::ビルド結果に、ブラウザに渡さない環境変数の値が含まれています。上のファイルを確認してください。"
             exit 1
           fi
 

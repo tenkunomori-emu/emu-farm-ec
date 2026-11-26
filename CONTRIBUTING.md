@@ -348,9 +348,10 @@ PR を下書きから「Ready for review」にすると、AI がレビューの�
 |---|---|---|
 | `dependency-review` | GitHub の dependency review(`actions/dependency-review-action`) | PR が追加・更新する依存ライブラリに、既知の脆弱性がある。深刻度は問わない。開発用のライブラリも対象にする |
 | `secret-scan` | gitleaks(設定は [.gitleaks.toml](.gitleaks.toml)) | PR のコミットに、シークレット(Stripe のシークレットキー、Webhook の署名シークレット、Supabase のシークレットキーなど)がある |
-| `build` | `npm run build` | ビルドに失敗する。または、ビルド結果に、シークレットの環境変数の値がある |
+| `build` | `npm run build` | ビルドに失敗する。または、ビルド結果に、ブラウザに渡さない環境変数の値がある |
 
 - 修正版のない脆弱性などで例外にするときは、`dependency-review` ジョブの `allow-ghsas` に勧告の ID を書き、理由をコメントに書く。
 - `secret-scan` が検出したシークレットは、すでに公開されている。コミットを削除するだけにせず、発行元でシークレットを無効にして、作り直す。
-- サーバーで使うシークレットの環境変数を追加するときは、`build` ジョブの `env` に、ダミーの値を追加する。
+- `secret-scan` がシークレットでない値を検出したときは、ログの Fingerprint を `.gitleaksignore` に書き、理由をコメントに書く。
+- ブラウザに渡さない環境変数(シークレットと、Supabase の publishable key)を追加するときは、`build` ジョブの `env` と `grep` に追加する。`env` には、ダミーの値を書く。
 - リポジトリの設定で、secret scanning、プッシュ保護、Dependabot alerts を有効にしている。プッシュ保護は、シークレットを含むプッシュを拒否する。Dependabot alerts は、マージ済みの依存ライブラリに、あとから見つかった脆弱性を通知する。
