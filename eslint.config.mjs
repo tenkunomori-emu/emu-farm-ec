@@ -17,6 +17,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // 方式検証のコード。サイトのコードではない。
     "spikes/**",
+    // Playwright の結果
+    "test-results/**",
+    "playwright-report/**",
   ]),
 ]);
 
