@@ -183,7 +183,7 @@ npm ci
 
 | 環境 | Vercel のプロジェクト | Supabase のプロジェクト | `APP_ENV` |
 |---|---|---|---|
-| ローカル環境 | なし(`npm run dev`) | ローカルの Supabase | `development` |
+| ローカル環境(OPS-006 の開発の環境) | なし(`npm run dev`) | ローカルの Supabase | `development` |
 | 検証環境 | `emu-farm-ec-staging` | `emu-farm-ec-staging` | `staging` |
 | 本番環境 | `emu-farm-ec-production` | `emu-farm-ec-production` | `production` |
 
@@ -200,7 +200,7 @@ npm ci
 - 検証環境: main へのマージで、`supabase/migrations/` に変更があるときに、自動的に適用される。Vercel のデプロイと並行して実行されるため、マイグレーションは、適用前のコードでも動く変更にする(列の削除や名前の変更は、それを使わなくするコードの変更と、別の PR に分ける)。
 - 本番環境: Promote の前に、次の手順で適用する。
   1. GitHub の Actions で、`migrate` のワークフローを、main ブランチで手動で起動する(Run workflow)。
-  2. `production-plan` のジョブのログで、`supabase db push --dry-run` が表示したマイグレーションの一覧を確認する。
+  2. `production-plan` のジョブのログで、`supabase db push --dry-run` が表示したマイグレーションの一覧を確認する。あわせて、実行のコミットが、Promote するコミットと同じであること(main の先頭が、検証環境で確認したコミットであること)を確かめる。違うときは、承認しない。
   3. `production` のジョブを承認する(Review deployments)。承認すると、`production-plan` と同じコミットのマイグレーションが適用される。
   4. `production` のジョブが成功したことを確認してから、Promote する。
 
@@ -223,7 +223,7 @@ Supabase の Free プランのプロジェクトは、1週間使われないと�
 
 | 対象 | 設定 |
 |---|---|
-| Supabase(両方のプロジェクト) | リージョンは東京(ap-northeast-1)。Data API は有効にし、新しいテーブルへの API アクセスの自動付与と、RLS の自動有効化は無効にする。IP address forwarding を有効にする(AUTH-001)。レガシー API キー(anon、service_role)を無効にする(AUTH-005)。無効にしたレガシー API キーの値は、どこにも置かない |
+| Supabase(両方のプロジェクト) | リージョンは東京(ap-northeast-1)。Data API は有効にし、新しいテーブルへの API アクセスの自動付与と、RLS の自動有効化は無効にする(RLS は、テーブルを作るマイグレーションで有効にする。ダッシュボードの設定に頼ると、ローカル環境と CI で同じ結果にならないため)。IP address forwarding を有効にする(AUTH-001)。レガシー API キー(anon、service_role)を無効にする(AUTH-005)。無効にしたレガシー API キーの値は、どこにも置かない |
 | Vercel(両方のプロジェクト) | Production Branch は main。Ignored Build Step は「Only build production」。Deployment Protection は、Vercel Authentication を All Deployments に適用する。環境変数 `SUPABASE_URL`、`SUPABASE_PUBLISHABLE_KEY`、`SUPABASE_SECRET_KEY`、`APP_ENV` は、Production 環境にだけ設定する(Preview 環境には設定しない) |
 | Vercel(本番のプロジェクト) | 「Auto-assign Custom Production Domains」を無効にする |
 | Vercel(検証のプロジェクト) | Cron Jobs を無効にする(Disable Cron Jobs。cron を含むデプロイを作るまで、この設定は表示されない) |
