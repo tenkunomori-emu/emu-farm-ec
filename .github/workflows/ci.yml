@@ -73,6 +73,7 @@ jobs:
           cache: npm
       - run: npm ci
       # test ジョブと同じ方法で起動する(TST-013)。
+      # Supabase の URL と鍵は、まだテストとアプリに渡していない。Supabase を最初に使う機能の PR で、test ジョブとまとめて渡す。
       - run: npx supabase start -x studio,postgres-meta,imgproxy,mailpit,realtime,edge-runtime,logflare,vector,supavisor
       # 鍵は、テストを実行するステップにだけ渡す。
       - run: npm run test:integration
@@ -102,6 +103,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       # test ジョブと同じ方法で起動する(TST-013)。
+      # Supabase の URL と鍵は、まだテストとアプリに渡していない。Supabase を最初に使う機能の PR で、test ジョブとまとめて渡す。
       - run: npx supabase start -x studio,postgres-meta,imgproxy,mailpit,realtime,edge-runtime,logflare,vector,supavisor
       # 本番と同じビルドで動かす(TST-003)。ビルドには鍵を渡さない。
       - run: npm run build
