@@ -1,0 +1,73 @@
+name: migrate
+
+# 検証環境: main へのマージで自動的に適用する。
+# 本番環境: 手動で起動する。--dry-run の結果を確認し、production の Environment で承認したあとに適用する。
+# 接続先は、Environment ごとのシークレット SUPABASE_DB_URL(セッションプーラーの接続文字列)で決まる。
+# GitHub のランナーは IPv6 で接続できないため、直接接続は使わない。
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - supabase/migrations/**
+      - .github/workflows/migrate.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# 同じデータベースへの適用を、同時に実行しない。実行中の適用は中断しない。
+concurrency:
+  group: migrate-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  staging:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx supabase db push --remote="$SUPABASE_DB_URL" --yes
+
+  production-plan:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production-plan
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx supabase db push --remote="$SUPABASE_DB_URL" --dry-run
+
+  # production の Environment の required reviewers が承認するまで、このジョブは始まらない。
+  # production-plan と同じコミットを適用する。
+  production:
+    needs: production-plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx supabase db push --remote="$SUPABASE_DB_URL" --yes

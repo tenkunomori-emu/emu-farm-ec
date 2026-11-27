@@ -9,3 +9,7 @@ spikes/
 
 # このファイルを変更する PR では、AI のレビューが実行されない。
 .github/workflows/claude-review.yml
+
+# Supabase CLI が生成するファイル
+supabase/.temp/
+supabase/.branches/

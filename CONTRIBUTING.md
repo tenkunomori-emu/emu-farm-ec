@@ -177,6 +177,58 @@ npm ci
 - 手元の Supabase は、決まったポート(54321 など。`supabase/config.toml` にある)を使う。ほかのプロジェクトの手元の Supabase が動いていると、起動できない。そのプロジェクトのフォルダで止めてから、起動する。
 - 手元の Supabase は、同じネットワークのほかの機器からも届き、鍵は、だれの手元でも同じ値である。外のネットワーク(店の Wi-Fi など)では、動かしたままにしない。本番の記録は、置かない(基本設計書の OPS-013)。
 
+### 検証環境と本番環境
+
+検証環境と本番環境は、Vercel と Supabase のプロジェクトを、環境ごとに1つずつ持つ(基本設計書の OPS-006〜OPS-009、ADR-0013)。環境は、環境変数 `APP_ENV` で判別する。
+
+| 環境 | Vercel のプロジェクト | Supabase のプロジェクト | `APP_ENV` |
+|---|---|---|---|
+| ローカル環境 | なし(`npm run dev`) | ローカルの Supabase | `development` |
+| 検証環境 | `emu-farm-ec-staging` | `emu-farm-ec-staging` | `staging` |
+| 本番環境 | `emu-farm-ec-production` | `emu-farm-ec-production` | `production` |
+
+**デプロイの経路**
+
+- PR: デプロイを作らない。マージ前のコードを、検証環境の Supabase に接続しないためである。
+- 検証環境: main へのマージで、自動的にデプロイされる。
+- 本番環境: main へのマージでデプロイは作られるが、本番のドメインには割り当てられない。検証環境で確認したコミットのデプロイを、Vercel のダッシュボードで Promote する。
+
+**マイグレーションの適用**
+
+マイグレーションは、GitHub Actions のワークフロー(`.github/workflows/migrate.yml`)で適用する。ローカル環境から、検証環境と本番環境に `supabase db push` を実行しない(実行の記録を残し、データベースのパスワードを開発者の PC に置かないため)。
+
+- 検証環境: main へのマージで、`supabase/migrations/` に変更があるときに、自動的に適用される。Vercel のデプロイと並行して実行されるため、マイグレーションは、適用前のコードでも動く変更にする(列の削除や名前の変更は、それを使わなくするコードの変更と、別の PR に分ける)。
+- 本番環境: Promote の前に、次の手順で適用する。
+  1. GitHub の Actions で、`migrate` のワークフローを、main ブランチで手動で起動する(Run workflow)。
+  2. `production-plan` のジョブのログで、`supabase db push --dry-run` が表示したマイグレーションの一覧を確認する。
+  3. `production` のジョブを承認する(Review deployments)。承認すると、`production-plan` と同じコミットのマイグレーションが適用される。
+  4. `production` のジョブが成功したことを確認してから、Promote する。
+
+データベースの接続文字列は、GitHub の Environment(`staging`、`production-plan`、`production`)のシークレット `SUPABASE_DB_URL` に置く。Environment は、main ブランチのジョブだけが使える。
+
+Supabase の Free プランのプロジェクトは、1週間使われないと一時停止される。一時停止されたときは、Supabase のダッシュボードで再開してから、ワークフローを再実行する。
+
+**Supabase の設定の適用**
+
+`supabase/config.toml` を変更したときは、検証環境、本番環境の順に、次のコマンドで適用する。`<ref>` は、`supabase/config.toml` の `[remotes.staging]` と `[remotes.production]` の `project_id` である。環境ごとに違う値(`site_url` など)は、この2つのブロックに書く。
+
+| すること | コマンド |
+|---|---|
+| 差分を確認する(設定は変更しない) | `npx supabase config diff --remote=<ref>` |
+| 適用する | `npx supabase config push --remote=<ref>` |
+
+**ダッシュボードで行う設定**
+
+リポジトリのファイルで管理できない設定である。プロジェクトを作り直すときは、次のとおりに設定する(基本設計書の OPS-016)。
+
+| 対象 | 設定 |
+|---|---|
+| Supabase(両方のプロジェクト) | リージョンは東京(ap-northeast-1)。Data API は有効にし、新しいテーブルへの API アクセスの自動付与と、RLS の自動有効化は無効にする。IP address forwarding を有効にする(AUTH-001)。レガシー API キー(anon、service_role)を無効にする(AUTH-005)。無効にしたレガシー API キーの値は、どこにも置かない |
+| Vercel(両方のプロジェクト) | Production Branch は main。Ignored Build Step は「Only build production」。Deployment Protection は、Vercel Authentication を All Deployments に適用する。環境変数 `SUPABASE_URL`、`SUPABASE_PUBLISHABLE_KEY`、`SUPABASE_SECRET_KEY`、`APP_ENV` は、Production 環境にだけ設定する(Preview 環境には設定しない) |
+| Vercel(本番のプロジェクト) | 「Auto-assign Custom Production Domains」を無効にする |
+| Vercel(検証のプロジェクト) | Cron Jobs を無効にする(Disable Cron Jobs。cron を含むデプロイを作るまで、この設定は表示されない) |
+| GitHub | Environment を3つ作る(`staging`、`production-plan`、`production`)。どれも、デプロイできるブランチを main だけにし、シークレット `SUPABASE_DB_URL` に、その環境の Supabase のセッションプーラーの接続文字列を置く(GitHub Actions は IPv6 で接続できないため、直接接続の接続文字列は使わない)。`production` には、required reviewers を設定し、管理者によるバイパスを無効にする |
+
 ### フォルダの決まり
 
 | フォルダ | 置くもの |
