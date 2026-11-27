@@ -226,8 +226,69 @@ Supabase の Free プランのプロジェクトは、1週間使われないと�
 | Supabase(両方のプロジェクト) | リージョンは東京(ap-northeast-1)。Data API は有効にし、新しいテーブルへの API アクセスの自動付与と、RLS の自動有効化は無効にする(RLS は、テーブルを作るマイグレーションで有効にする。ダッシュボードの設定に頼ると、ローカル環境と CI で同じ結果にならないため)。IP address forwarding を有効にする(AUTH-001)。レガシー API キー(anon、service_role)を無効にする(AUTH-005)。無効にしたレガシー API キーの値は、どこにも置かない |
 | Vercel(両方のプロジェクト) | Production Branch は main。Ignored Build Step は「Only build production」。Deployment Protection は、Vercel Authentication を All Deployments に適用する。環境変数 `SUPABASE_URL`、`SUPABASE_PUBLISHABLE_KEY`、`SUPABASE_SECRET_KEY`、`APP_ENV` は、Production 環境にだけ設定する(Preview 環境には設定しない) |
 | Vercel(本番のプロジェクト) | 「Auto-assign Custom Production Domains」を無効にする |
-| Vercel(検証のプロジェクト) | Cron Jobs を無効にする(Disable Cron Jobs。cron を含むデプロイを作るまで、この設定は表示されない) |
+| Vercel(検証のプロジェクト) | Cron Jobs を無効にする(Disable Cron Jobs。cron を含むデプロイを作るまで、この設定は表示されない)。環境変数 `STRIPE_SECRET_KEY` に、検証のサンドボックスのシークレットキーを、Production 環境にだけ設定する。Protection Bypass for Automation のシークレットを1つ作る(「Stripe のサンドボックス」の「検証環境の Webhook」) |
 | GitHub | Environment を3つ作る(`staging`、`production-plan`、`production`)。どれも、デプロイできるブランチを main だけにし、シークレット `SUPABASE_DB_URL` に、その環境の Supabase のセッションプーラーの接続文字列を置く(GitHub Actions は IPv6 で接続できないため、直接接続の接続文字列は使わない)。`production` には、required reviewers を設定し、管理者によるバイパスを無効にする |
+
+### Stripe のサンドボックス
+
+Stripe のサンドボックスは、開発、CI、検証の3つを持ち、鍵を分ける(基本設計書の TST-022、OPS-009)。本番の Stripe の鍵と設定は、リリース・運用の工程で行う。
+
+| サンドボックス | 使う環境 | `STRIPE_SECRET_KEY` の置き場所 |
+|---|---|---|
+| `emu-farm-ec-development` | ローカル環境(開発者で共有する) | `.env.local` |
+| `emu-farm-ec-ci` | CI | GitHub(このリポジトリのブランチからの PR にだけ渡す。TST-009) |
+| `emu-farm-ec-staging` | 検証環境 | Vercel の検証のプロジェクトの Production 環境 |
+
+**サンドボックスの作り方**
+
+Stripe のダッシュボードの Sandboxes で作る。「Copy live account to sandbox」は無効にし、国は日本にする。作ったあと、次のとおりに設定する。
+
+| 設定 | 値 |
+|---|---|
+| Connect の設定 | 資金フローは「売り手が直接代金を回収する」(ADR-0004)。業界は「E-コマース商品」。アカウントの作成は「埋め込みアカウント登録コンポーネント」、アカウント管理は「埋め込みアカウントコンポーネント」、決済処理手数料は「Stripe」(ADR-0009) |
+| 連結アカウント向けの決済手段(Settings → Connect → Payment methods の Default) | 「連結アカウントがダッシュボードから決済手段をカスタマイズできるようにする」は無効。カード、Apple Pay、Google Pay は有効。Link はブロック(IF-024)。カード分割払いは無効(IF-023)。PayPay とコンビニ払いは無効(ADR-0005)。ほかの決済手段は変えない(サーバーは、カードのブランドが Visa、Mastercard、American Express と読めたときだけ注文にするため。ADR-0012 の「決定」の3) |
+
+**支払いを受け付けられる連結アカウントの登録**
+
+テストで使う、支払いを受け付けられる連結アカウントは、サンドボックスごとに1つ、人が登録する(基本設計書の TST-024)。サンドボックスを作り直したときは、登録し直す。
+
+1. 連結アカウントを作り、入力画面のリンクを表示する。
+
+   ```
+   node --env-file=.env.local scripts/create-test-connected-account.mjs
+   ```
+
+   開発のサンドボックスのほかでは、鍵をファイルに保存せず、コマンドの行にも書かない(シェルの履歴に残るため)。`read -rs STRIPE_SECRET_KEY && export STRIPE_SECRET_KEY` で、画面に出さずに入れてから、`node scripts/create-test-connected-account.mjs` を実行する。`unset STRIPE_SECRET_KEY` は、手順4が終わってから実行する。手順3も、同じ形(`--env-file` を付けない)で実行する。
+
+2. リンクを5分以内に開き、次のテスト用の値で入力する。実在の人の情報は入れない。
+
+   | 項目 | 値 |
+   |---|---|
+   | 電話番号 | 「テスト用の電話番号を使用する」を押す |
+   | 生年月日 | `1901/01/01` |
+   | 郵便番号 | `100-0001` |
+   | 番地 | `address_full_match`(カタカナの欄は `アドレス`) |
+   | ウェブサイト | `https://accessible.stripe.com` |
+   | 顧客サポート電話番号 | `90 1234 5678` |
+   | 本人確認 | 「シミュレーション」で「確認成功」を選ぶ |
+
+   氏名、商品の説明、明細書表記などの欄は、テスト用とわかる値を入れる。
+
+3. 連結アカウントの ID を付けて実行し、`カード決済: active`、`入金: active` と表示されることを確かめる。有効になっていないときは、新しいリンクが表示されるので、2 に戻る。
+
+   ```
+   node --env-file=.env.local scripts/create-test-connected-account.mjs acct_...
+   ```
+
+4. 連結アカウントの ID を、環境変数 `STRIPE_TEST_CONNECTED_ACCOUNT_ID` に置く(ローカル環境では `.env.local`)。テストは、このアカウントの状態を変えない(TST-024)。
+
+**検証環境の Webhook**
+
+検証のプロジェクトは All Deployments で保護しているため、Stripe の Webhook は、Protection Bypass for Automation のシークレットを、送信先の URL のクエリパラメーター `x-vercel-protection-bypass` に付けて受ける(ADR-0013)。シークレットがない求めは、`302`(Vercel のログインの画面への転送)になり、Stripe は失敗として扱う。
+
+- シークレットは、Stripe の送信先の URL のほかには置かない。テストには渡さない(TST-010)。
+- 本番のプロジェクトには、シークレットを作らない(ADR-0013)。
+- Webhook の送信先と `STRIPE_WEBHOOK_SECRET` は、Webhook のルートを最初に追加する PR で設定する。受けるイベントの種類は、生産者のアカウントの状態の Webhook を v1 と v2 のどちらの形で受けるかの確認(TST-040、IF-053)で決まるためである。
 
 ### フォルダの決まり
 

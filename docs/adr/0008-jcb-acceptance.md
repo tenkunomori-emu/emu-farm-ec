@@ -2,6 +2,7 @@
 
 - 日付: 2026-11-19
 - ステータス: 採用
+- 更新(2026-11-27): 「決定」の1の、受け付ける支払い方法に Link を含める点は、ADR-0012([0012-checkout-session-and-external-services.md](0012-checkout-session-and-external-services.md))の「決定」の5で変えた。MVP で受け付ける支払い方法は、カード(Visa、Mastercard、American Express)、Apple Pay、Google Pay の3つである(FR-044)。
 
 ## 背景
 
