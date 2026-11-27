@@ -246,7 +246,7 @@ Stripe のダッシュボードの Sandboxes で作る。「Copy live account to
 | 設定 | 値 |
 |---|---|
 | Connect の設定 | 資金フローは「売り手が直接代金を回収する」(ADR-0004)。業界は「E-コマース商品」。アカウントの作成は「埋め込みアカウント登録コンポーネント」、アカウント管理は「埋め込みアカウントコンポーネント」、決済処理手数料は「Stripe」(ADR-0009) |
-| 連結アカウント向けの決済手段(Settings → Connect → Payment methods の Default) | 「連結アカウントがダッシュボードから決済手段をカスタマイズできるようにする」は無効。カード、Apple Pay、Google Pay は有効。Link はブロック(IF-024)。カード分割払いは無効(IF-023)。ほかの決済手段は変えない(サーバーは、カードのブランドが Visa、Mastercard、American Express と読めたときだけ注文にするため。ADR-0012 の「決定」の3) |
+| 連結アカウント向けの決済手段(Settings → Connect → Payment methods の Default) | 「連結アカウントがダッシュボードから決済手段をカスタマイズできるようにする」は無効。カード、Apple Pay、Google Pay は有効。Link はブロック(IF-024)。カード分割払いは無効(IF-023)。PayPay とコンビニ払いは無効(ADR-0005)。ほかの決済手段は変えない(サーバーは、カードのブランドが Visa、Mastercard、American Express と読めたときだけ注文にするため。ADR-0012 の「決定」の3) |
 
 **支払いを受け付けられる連結アカウントの登録**
 
@@ -258,7 +258,7 @@ Stripe のダッシュボードの Sandboxes で作る。「Copy live account to
    node --env-file=.env.local scripts/create-test-connected-account.mjs
    ```
 
-   開発のサンドボックスのほかでは、鍵をファイルに保存せず、`STRIPE_SECRET_KEY=<シークレットキー> node scripts/create-test-connected-account.mjs` のように、コマンドの間だけ渡す。
+   開発のサンドボックスのほかでは、鍵をファイルに保存せず、コマンドの行にも書かない(シェルの履歴に残るため)。`read -rs STRIPE_SECRET_KEY && export STRIPE_SECRET_KEY` で、画面に出さずに入れてから、`node scripts/create-test-connected-account.mjs` を実行する。終わったら、`unset STRIPE_SECRET_KEY` を実行する。
 
 2. リンクを5分以内に開き、次のテスト用の値で入力する。実在の人の情報は入れない。
 
