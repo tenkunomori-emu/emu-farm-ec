@@ -10,6 +10,7 @@
 //   before: Hook を設定する前に動かす。メールが届くことを、受信箱で確かめる。
 //   after:  Hook を設定したあとに動かす。関数が呼ばれ、メールが届かないことを確かめる。
 //           続けて、関数がエラーを返す設定にして、もう一度頼む。最後に、アカウントを削除する。
+//           アカウントがないときは作る(after を動かし直すときに、before でメールを頼まずに済むため)。
 // 関数と、呼ばれた記録の表は、setup.sql で作る。
 
 import { secretClient, testPassword, createUser, deleteUser, sleep } from "./common.ts";
@@ -60,11 +61,7 @@ if (phase === "before") {
   await requestRecovery("Hook なし");
   console.log("受信箱に、パスワードの再設定のメールが届いたことを確かめてください。");
 } else {
-  const userId = await findUserId(inbox);
-  if (!userId) {
-    console.error("アカウントがありません。先に before を動かしてください。");
-    process.exit(1);
-  }
+  const userId = (await findUserId(inbox)) ?? (await createUser(inbox, testPassword()));
   try {
     await setHookFails(false);
     await requestRecovery("Hook あり(関数は成功を返す)");

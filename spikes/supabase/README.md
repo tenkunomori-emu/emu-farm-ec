@@ -31,7 +31,13 @@
 2. Node.js 22.18 以上を使う(TypeScript のファイルを、ビルドせずにそのまま動かすため)。このフォルダーで `npm install` を実行する。
 3. [API Keys](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/settings/api-keys) の画面で、シークレットキーを新しく作る(名前は `spike`)。
 4. `.env.example` を `.env` にコピーし、値を入れる。
-5. [SQL Editor](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/sql/new) で、`setup.sql` を実行する。
+5. [SQL Editor](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/sql/new) で、次の文を実行し、結果を残しておく。Send Email hook を作ると、public のスキーマの権限が変わるため、後片付けのあとに比べる。
+
+   ```
+   select nspacl from pg_namespace where nspname = 'public';
+   ```
+
+6. [SQL Editor](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/sql/new) で、`setup.sql` を実行する。
 
 ### 確かめ
 
@@ -44,9 +50,9 @@
    node --env-file=.env 05-recreate-same-email.ts
    ```
 
-2. Send Email Hook を、次の順に確かめる。
+2. Send Email Hook を、次の順に確かめる。Supabase Auth のメールの送信には、プロジェクト全体の上限がある(組み込みの送信では1時間に2通。Supabase の公式ドキュメント「Rate limits」)。before で1通、after で2通を頼むため、before のあと1時間あけてから after を動かす。
    1. `node --env-file=.env 04-send-email-hook.ts before` を動かし、`SPIKE_INBOX_EMAIL` の受信箱に、パスワードの再設定のメールが届くことを確かめる。
-   2. [Auth Hooks](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/auth/hooks) の画面で、Send Email hook を追加する。種類は Postgres、スキーマは `public`、関数は `spike_send_email_hook` にする。
+   2. [Auth Hooks](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/auth/hooks) の画面で、Send Email hook を追加する。種類は Postgres、スキーマは `public`、関数は `spike_send_email_hook` にする。画面を再読み込みし、一覧に Send Email hook が「ENABLED」で表示されることを確かめる。
    3. `node --env-file=.env 04-send-email-hook.ts after` を動かし、受信箱に新しいメールが届かないことを確かめる。before のメールが届くまでにかかった時間より長く待ってから確かめる。
    4. [Auth Hooks](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/auth/hooks) の画面で、Send Email hook を削除する。
 
@@ -56,3 +62,4 @@
 2. [API Keys](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/settings/api-keys) の画面で、`spike` のシークレットキーを削除する。
 3. [Users](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/auth/users) の画面で、確かめで作ったアカウント(`spike-` で始まるものと、`SPIKE_INBOX_EMAIL` のもの)が残っていないことを確かめる。
 4. リポジトリのフォルダーで、準備の1と同じコマンドを実行し、結果が同じであることを確かめる。
+5. [SQL Editor](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/sql/new) で、準備の5と同じ文を実行し、結果が同じであることを確かめる。
