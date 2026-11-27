@@ -31,7 +31,7 @@
 2. Node.js 22.18 以上を使う(TypeScript のファイルを、ビルドせずにそのまま動かすため)。このフォルダーで `npm install` を実行する。
 3. [API Keys](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/settings/api-keys) の画面で、シークレットキーを新しく作る(名前は `spike`)。
 4. `.env.example` を `.env` にコピーし、値を入れる。
-5. [SQL Editor](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/sql/new) で、次の文を実行し、結果を残しておく。Send Email hook を作ると、public のスキーマの権限が変わるため、後片付けのあとに比べる。
+5. [SQL Editor](https://supabase.com/dashboard/project/gpxqqrzpgcfqstvnxkxo/sql/new) で、次の文を実行し、結果を残しておく。Send Email Hook を作ると、public のスキーマの権限が変わるため、後片付けのあとに比べる。
 
    ```
    select nspacl from pg_namespace where nspname = 'public';
