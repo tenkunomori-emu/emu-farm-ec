@@ -461,7 +461,6 @@ PR を下書きから「Ready for review」にすると、AI がレビューの�
 
 `lint` のチェックは、Lint(`npm run lint`)と書式の確認(`npm run format:check`)を実行する。書式は Prettier で統一する。PR を作る前に、`npm run format` で書式を整える。
 
-
 `integration` と `e2e` のチェックは、結合テスト(`npm run test:integration`)と E2E テスト(`npm run test:e2e`)を実行する。CI のサンドボックス(`emu-farm-ec-ci`)の鍵は、Actions のシークレット `STRIPE_SECRET_KEY` に、連結アカウントの ID は、Actions の変数 `STRIPE_TEST_CONNECTED_ACCOUNT_ID` に置いている。フォークからの PR には、シークレットが渡されないため、この2つのチェックは失敗する。フォークからの PR は、メンバーが中身を確かめ、このリポジトリのブランチに取り込んでから実行する(基本設計書の TST-009)。
 
 ### セキュリティのチェック
