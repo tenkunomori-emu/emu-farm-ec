@@ -1,0 +1,11 @@
+{
+  "name": "supabase-spike",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.119.2"
+  }
+}
