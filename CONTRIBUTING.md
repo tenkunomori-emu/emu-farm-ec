@@ -258,7 +258,7 @@ Stripe のダッシュボードの Sandboxes で作る。「Copy live account to
    node --env-file=.env.local scripts/create-test-connected-account.mjs
    ```
 
-   開発のサンドボックスのほかでは、鍵をファイルに保存せず、コマンドの行にも書かない(シェルの履歴に残るため)。`read -rs STRIPE_SECRET_KEY && export STRIPE_SECRET_KEY` で、画面に出さずに入れてから、`node scripts/create-test-connected-account.mjs` を実行する。終わったら、`unset STRIPE_SECRET_KEY` を実行する。
+   開発のサンドボックスのほかでは、鍵をファイルに保存せず、コマンドの行にも書かない(シェルの履歴に残るため)。`read -rs STRIPE_SECRET_KEY && export STRIPE_SECRET_KEY` で、画面に出さずに入れてから、`node scripts/create-test-connected-account.mjs` を実行する。`unset STRIPE_SECRET_KEY` は、手順4が終わってから実行する。手順3も、同じ形(`--env-file` を付けない)で実行する。
 
 2. リンクを5分以内に開き、次のテスト用の値で入力する。実在の人の情報は入れない。
 
