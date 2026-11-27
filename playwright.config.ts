@@ -15,7 +15,8 @@ export default defineConfig({
   webServer: {
     command: isCI ? "npm run start" : "npm run build && npm run start",
     url: "http://localhost:3000",
-    reuseExistingServer: !isCI,
+    // 起動中のサーバー(next dev など)は使わない。3000 番が使われているときは、エラーで止まる
+    reuseExistingServer: false,
     timeout: 180_000,
   },
 });
