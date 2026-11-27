@@ -155,6 +155,10 @@ npm ci
 | 書式を整える(Prettier) | `npm run format` |
 | 書式を確認する | `npm run format:check` |
 | 単体テスト | `npm test` |
+| 結合テスト(Stripe のサンドボックスを呼ぶ) | `npm run test:integration` |
+| E2E テスト(サイトをビルドして起動し、ブラウザで操作する) | `npm run test:e2e` |
+
+結合テストと E2E テストは、`.env.local` の `STRIPE_SECRET_KEY` と `STRIPE_TEST_CONNECTED_ACCOUNT_ID`(開発のサンドボックスの値。「Stripe のサンドボックス」)を使う。E2E テストを初めて実行する前に、`npx playwright install chromium` で、テストに使うブラウザを入れる。
 
 開発中に、ページの左下に、Next.js が「Issue」の表示を出すことがある。このうち、`<html>` や `<body>` に、サイトのコードにない属性が足された、という表示は、ブラウザの拡張機能がページを書き換えたものである。拡張機能の動かないシークレット ウィンドウで開いて、表示が出ないことを確かめる。サイトのコードで表示を消すことはしない(本当のずれも見えなくなるため)。
 
@@ -236,7 +240,7 @@ Stripe のサンドボックスは、開発、CI、検証の3つを持ち、鍵�
 | サンドボックス | 使う環境 | `STRIPE_SECRET_KEY` の置き場所 |
 |---|---|---|
 | `emu-farm-ec-development` | ローカル環境(開発者で共有する) | `.env.local` |
-| `emu-farm-ec-ci` | CI | GitHub(このリポジトリのブランチからの PR にだけ渡す。TST-009) |
+| `emu-farm-ec-ci` | CI | GitHub の Actions のシークレット(このリポジトリのブランチからの PR にだけ渡す。TST-009) |
 | `emu-farm-ec-staging` | 検証環境 | Vercel の検証のプロジェクトの Production 環境 |
 
 **サンドボックスの作り方**
@@ -451,11 +455,13 @@ PR を下書きから「Ready for review」にすると、AI がレビューの�
 - マージには、次の5つが必要
   - 最新のコミットで、`review` のチェックが成功している
   - 最新のコミットで、`requirements` のチェックが成功している
-  - 最新のコミットで、`typecheck`、`lint`、`test`、`build`、`dependency-review`、`secret-scan` のチェックが成功している
+  - 最新のコミットで、`typecheck`、`lint`、`test`、`integration`、`e2e`、`build`、`dependency-review`、`secret-scan` のチェックが成功している
   - 未解決のスレッドがない
   - PR のブランチが、今の `main` を含んでいる
 
 `lint` のチェックは、Lint(`npm run lint`)と書式の確認(`npm run format:check`)を実行する。書式は Prettier で統一する。PR を作る前に、`npm run format` で書式を整える。
+
+`integration` と `e2e` のチェックは、結合テスト(`npm run test:integration`)と E2E テスト(`npm run test:e2e`)を実行する。CI のサンドボックス(`emu-farm-ec-ci`)の鍵は、Actions のシークレット `STRIPE_SECRET_KEY` に、連結アカウントの ID は、Actions の変数 `STRIPE_TEST_CONNECTED_ACCOUNT_ID` に置いている。フォークからの PR には、シークレットが渡されないため、この2つのチェックは失敗する。フォークからの PR は、メンバーが中身を確かめ、このリポジトリのブランチに取り込んでから実行する(基本設計書の TST-009)。
 
 ### セキュリティのチェック
 

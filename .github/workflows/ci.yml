@@ -52,6 +52,68 @@ jobs:
       - run: npm test
       - run: npm run db:test
 
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # フォークからの PR には、シークレットが渡されない(TST-009)。
+      # スキップしたジョブは必須のチェックで成功と同じ扱いになるため、スキップせずに失敗させる。
+      - name: CI の Stripe の鍵があることを確認する
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: |
+          if [ -z "$STRIPE_SECRET_KEY" ]; then
+            echo "::error::STRIPE_SECRET_KEY がありません。フォークからの PR には CI の鍵を渡しません(TST-009)。メンバーが中身を確かめ、このリポジトリのブランチに取り込んでから実行してください。"
+            exit 1
+          fi
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # test ジョブと同じ方法で起動する(TST-013)。
+      # Supabase の URL と鍵は、まだテストとアプリに渡していない。Supabase を最初に使う機能の PR で、test ジョブとまとめて渡す。
+      - run: npx supabase start -x studio,postgres-meta,imgproxy,mailpit,realtime,edge-runtime,logflare,vector,supavisor
+      # 鍵は、テストを実行するステップにだけ渡す。
+      - run: npm run test:integration
+        env:
+          APP_ENV: development
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_TEST_CONNECTED_ACCOUNT_ID: ${{ vars.STRIPE_TEST_CONNECTED_ACCOUNT_ID }}
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # integration ジョブと同じ理由で、鍵がないときは失敗させる(TST-009)。
+      - name: CI の Stripe の鍵があることを確認する
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: |
+          if [ -z "$STRIPE_SECRET_KEY" ]; then
+            echo "::error::STRIPE_SECRET_KEY がありません。フォークからの PR には CI の鍵を渡しません(TST-009)。メンバーが中身を確かめ、このリポジトリのブランチに取り込んでから実行してください。"
+            exit 1
+          fi
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      # test ジョブと同じ方法で起動する(TST-013)。
+      # Supabase の URL と鍵は、まだテストとアプリに渡していない。Supabase を最初に使う機能の PR で、test ジョブとまとめて渡す。
+      - run: npx supabase start -x studio,postgres-meta,imgproxy,mailpit,realtime,edge-runtime,logflare,vector,supavisor
+      # 本番と同じビルドで動かす(TST-003)。ビルドには鍵を渡さない。
+      - run: npm run build
+      # Playwright が next start でアプリを起動する(playwright.config.ts)。鍵は、このステップにだけ渡す。
+      - run: npm run test:e2e
+        env:
+          APP_ENV: development
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_TEST_CONNECTED_ACCOUNT_ID: ${{ vars.STRIPE_TEST_CONNECTED_ACCOUNT_ID }}
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
