@@ -2,7 +2,7 @@
 
 生産者が出店し、購入者が生産者から直接買うマーケットプレイスです。決済には Stripe Connect のダイレクト支払いを使います。代金は購入者から各生産者の Stripe アカウントに直接入り、管理者はアプリケーション手数料だけを受け取ります。
 
-> ステータス: **開発基盤の準備中**。要件定義書([01-requirements.md](docs/01-requirements.md))と基本設計書([02-basic-design.md](docs/02-basic-design.md))は確定済みです。現在は、実装に入る前の開発環境(Next.js のプロジェクト、ローカル環境の Supabase、CI)を整えています。各文書の版と状態は、下の「工程と成果物」の表を見てください。
+> ステータス: **開発基盤の準備が完了**。要件定義書([01-requirements.md](docs/01-requirements.md))と基本設計書([02-basic-design.md](docs/02-basic-design.md))は確定済みです。次は、機能ごとの詳細設計と実装です。各文書の版と状態は、下の「工程と成果物」の表を見てください。
 
 ## 工程と成果物
 
@@ -15,7 +15,7 @@
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v2.1([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.1) |
 | 基本設計 | 基本設計書 v1.0([02-basic-design.md](docs/02-basic-design.md))、ADR-0009〜ADR-0014、方式検証のコード([spikes/](spikes/))、要件から設計、テストへの対応表(トレーサビリティマトリクス)の最初の版([04-test.md](docs/04-test.md)。要件の ID と、基本設計の列) | 確定(タグ basic-design-v1.0) |
-| 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「開発環境の作り方」の節 | 作成中 |
+| 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「開発環境の作り方」の節 | 完了 |
 | 詳細設計 | 機能ごとのマイグレーション、型、テスト | 未着手 |
 | 実装・単体テスト | コード | 未着手 |
 | テスト・品質確認 | テスト仕様書と結果、対応表のテストの列([04-test.md](docs/04-test.md)) | 未着手 |
