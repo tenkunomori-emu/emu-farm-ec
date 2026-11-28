@@ -2,6 +2,7 @@
 
 - 日付: 2026-11-23
 - ステータス: 採用
+- 更新(2026-11-28): 不審請求の自動提出、証拠のページから出したときの中身、生産者のアカウントの状態の知らせを、検証のサンドボックスで確かめた(Issue #221)。「決定」の9〜12と「確認できた事実(2026-11-28 の追加、Issue #221)」を足し、「影響とリスク」を直した。
 
 ## 背景
 
@@ -55,6 +56,10 @@
 6. 領収書は、注文の画面から、Stripe の領収書のページを開く形で届ける。Stripe が領収書をメールで送ることには、頼らない(IF-018)。
 7. Stripe の知らせは、合図として使い、知らせが指すものを Stripe から読み直して、データベースを合わせる。受けた知らせを記録する実体は、持たない。届かない知らせは、Stripe の送り直しと、定期の突き合わせで拾う(IF-042〜IF-053)。
 8. メールを送るサービスは Resend、アクセス解析は Vercel の Web Analytics と Speed Insights を使う(IF-002〜IF-008)。
+9. 不審請求の自動提出(Smart Disputes の自動対応)は、開発、CI、検証のサンドボックスと本番のすべてで、Connect の不審請求の設定でオフにし、連結アカウントによる変更を許可しない。本番の設定は、リリースのときに行う。オンだと、生産者が何もしなくても、Stripe が期限に反証資料を出し(IF-035 と食い違う)、生産者が足した反証資料に、Stripe が作ったデータを合わせて出す(IF-038 と食い違う)。勝つと、不審請求の額の30%の Smart Disputes の手数料もかかる。連結アカウントごとの設定は、公開プレビューの API でしか使えないため、使わない。
+10. サイトは、不審請求か照会が作られた知らせ(IF-052 の charge.dispute.created)を受けたら、その提出方法(intended_submission_method)を、提出しない指定(submit: false)を付けて manual にする(IF-035、TRN-027、TRN-030)。既定の prefer_manual は、反証資料を上げていなければ Smart Disputes を使う、という意味である。
+11. 証拠のページ(IF-038)から出すときは、ページで入力しなかった反証資料の項目を、すべて空("")にして出す。部品で入れかけた中身は、出さなくても、Stripe の反証資料に残るためである。
+12. 生産者のアカウントの状態の知らせ(IF-053)は、v2 の thin のイベントの v2.core.account[configuration.merchant].capability_status_updated と v2.core.account[requirements].updated で受け、v1 の account.updated は受けない。v2 のイベントは、プラットフォームのアカウントの範囲(Your account)の送信先で受ける。Stripe が、Accounts v2 のアカウントには v2 のイベントを、新しい作りには thin の形を勧めているためである。IF-049〜IF-052 の形は、Issue #223 で決める。
 
 ## 確認できた事実(サンドボックスと公式ページ、2026-11-23時点)
 
@@ -81,6 +86,27 @@
 - 受け取れなかった知らせは、Stripe が、あとで送り直す(「Process undelivered webhook events」)。
 - Accounts v2 で作ったアカウントは、v1 の形の知らせと、v2 の形の知らせの両方を出す(「Use the Accounts v2 API in your existing integration」)。
 
+## 確認できた事実(2026-11-28 の追加、Issue #221)
+
+検証のサンドボックスで、確かめ用の生産者のアカウントを2つ登録して使った(ADR-0009 の「確認できた事実(2026-11-28 の追加、Issue #221)」)。方式検証のコードは、[spikes/stripe/](../../spikes/stripe/) の 11-account-events.ts、12-funding-and-disputes.ts、13-dispute-evidence.ts、embedded/dispute-evidence-server.ts である。
+
+| 確かめたこと | 結果 |
+|---|---|
+| Connect の不審請求の設定の、最初の値 | 検証のサンドボックスでは、「自動対応を有効にする」がオン、「連結アカウントが Smart Disputes の自動応答を有効または無効にする」が「許可する」だった。開発、CI、検証のサンドボックスを、「決定」の9のとおりに変えた |
+| 不審請求が作られたときの提出方法 | 1つ目の確かめ用のアカウントで起こした2件の不審請求は、どちらも、提出方法(intended_submission_method)が prefer_manual、反証資料の提出の方法(evidence_details.submission_method)が not_submitted だった。1件を、API で submit: false を付けて manual に変えられた。stripe のライブラリ 23.2.0 では、submit の既定は true で、付けないとすぐに出される |
+| 部品で入れかけた反証資料 | 不審請求の部品で入力した中身(顧客の名前、商品の説明)は、出さなくても、Stripe の反証資料に保存された。そのあと API で別の項目を足しても(submit: false)、部品で入れた項目は残った |
+| ページで入力しなかった項目を空にして出す | 空("")にした項目は出されず、API で送った項目だけが出された(提出の方法は manual、提出の回数は1)。テスト用の値で勝った。ファイルの項目は確かめていない |
+| 生産者のアカウントの状態の知らせ | 登録から有効になるまでに、v1 の account.updated と、v2 の capability_status_updated と requirements.updated が記録された。v1 は v2 より7〜16秒早かった。v1 の知らせには、アカウント全体の写し(メールアドレス、電話番号、住所、口座の名義と下4桁)が入っていた。v2 の changes には、カード決済が restricted から active に変わったことと、要件の変化が入っていた。ウェブサイトの変更では、v1 は出たが、v2 の2つの種類は出なかった |
+| 送信先がないときの v2 の知らせ | 送信先がなくても記録され、Events v2 API で読めた。capability_status_updated は、カード決済と入金のほかに、jcb_payments でも出た |
+
+公式ページで確かめたこと:
+
+- 自動対応をオフにすると、期限までに応じなかった不審請求は、受け入れたことになり、負ける(「Configure auto-respond settings for Smart Disputes」)。
+- Smart Disputes の手数料は、勝ったときだけ、不審請求の額の30%かかる(Stripe の料金のページ)。
+- 提出方法の manual は、Smart Disputes を使わない。prefer_manual は、反証資料を上げていなければ Smart Disputes を使う(「Adds the ability to choose how you submit a dispute response」)。プラットフォームの設定をオフにしたときとの組み合わせは、書かれていない。
+- Accounts v2 のアカウントの v2 の知らせは、プラットフォームのアカウントの範囲(Your account)に、v1 の知らせは、連結アカウントの範囲(Connected accounts)に届く。Stripe は、v2 の知らせを受ける新しい送信先を勧め、v1 の account.updated を受けないように書いている(「Use the Accounts v2 API in your existing integration」「Charge SaaS fees to your connected accounts」)。
+- 送信先は、thin か snapshot のどちらか1つの形で受ける。Stripe は、新しい作りには thin を勧めている(「How events work」)。v1 のリソースの thin の知らせは、2026年9月30日から正式に使える(「Makes thin events for API v1 resources generally available」)。
+
 ## 影響とリスク
 
 - 状態遷移の章の、仮押さえの「回」ごとの扱い(前の回の支払いを取り消してから、新しい回を始める)は、なくなった。1つの Checkout Session が持つ支払いは1つで、やり直しは、Stripe の中で行われる。支払いの操作の試み(ENT-015)は、Checkout Session を作る試みを記録する形に変えた。
@@ -92,12 +118,12 @@
 - 実装のテストで確かめること:
   - ボタンを続けて押したときに、仮押さえが二重にならないか。
   - 終わらせる求めと、仮押さえの成功が、ほぼ同時に起きたときに、どちらか一方に決まるか。
-  - どの種類の Stripe の知らせが、どの順で届くか(仮押さえの成功、失敗、Checkout Session の終わり、返金、不審請求、アカウントの状態)。生産者のアカウントの状態の知らせを、v1 の形と v2 の形のどちらで受けるか(IF-053)。
+  - どの種類の Stripe の知らせが、どの順で届くか(仮押さえの成功、失敗、Checkout Session の終わり、返金、不審請求、アカウントの状態)。生産者のアカウントの状態の知らせの形は、「決定」の12で決めた。
   - Link を使わない指定を付けたときに、登録の枠が出なくなるか。
   - 領収書の見出しを、言語を ja にした Customer を付けると、日本語にできるか(MVP は、英語の見出しのままでよいとした)。
-  - 残高の部品に、入金の一覧が出るか(IF-015)。
-  - 生産者が何もしないとき、Stripe が、不審請求の証拠を自動でまとめて出すことがあるか(IF-035)。証拠のページ(IF-038)から出したとき、役割が外れる前に部品で入れかけた中身が残らず、ページで入力した中身だけが出るか。
-  - 証拠を出す期限を過ぎたあと、前から開いていた部品からの操作を、Stripe が断るか(IF-040)。
+  - 残高の部品に、入金の一覧が出るか(IF-015)。入金を待つ必要があるため、Issue #222 で確かめる。
+  - 生産者が何もしないとき、Stripe が、不審請求の証拠を自動でまとめて出すことがあるか(IF-035)。自動対応をオフにした設定で、提出方法が prefer_manual のままの不審請求が、期限に出されるかを、Issue #222 で確かめる。証拠のページ(IF-038)から出したときの中身は、「確認できた事実(2026-11-28 の追加、Issue #221)」のとおり確かめた。ファイルの項目を空にできるかは、不審請求の機能のテストで確かめる。
+  - 証拠を出す期限を過ぎたあと、前から開いていた部品からの操作を、Stripe が断るか(IF-040)。期限を待つ必要があるため、Issue #222 で確かめる。
   - Speed Insights が、Cookie も、端末に残る識別子も書かないか(NFR-016)。サーバーから出来事を送ったときに、注文の完了が数えられるか(IF-007)。
   - 読むだけの役割で、Vercel の画面の、秘密の鍵の値が見えないか(IF-008)。
   - 運送会社の追跡のページを、伝票番号を付けたリンクで、直接開けるか(SCR-005)。開けない運送会社は、設定の値を、追跡の入口のページにする。
@@ -105,11 +131,13 @@
   - Apple Pay と Google Pay に入った JCB、ダイナースクラブ、ディスカバーのカードが、止める指定で止まるか。その支払いから、サーバーがカードのブランドを読めるか。
   - 日本の携帯電話会社のメールアドレスに、サイトのメールが届くか。
   - Checkout Session の期限の時刻から、Stripe が終わらせるまでの時間。設計は、サイトの期限の処理からも終わらせるため、この時間に頼っていない。
+- 本番の Connect の不審請求の設定は、リリースのときに、検証のサンドボックスと同じにする(「決定」の9)。オフにすると、生産者が期限までに応じなかった不審請求は、負ける。
+- 生産者のアカウントの状態の知らせ(「決定」の12)は、IF-049〜IF-052 の知らせと届く範囲が違うため、送信先と署名の鍵が分かれる(IF-042、OPS-009。基本設計書への反映は Issue #210)。IF-049〜IF-052 の形と、送信先の数は、Issue #223 で決める。
 - MVP のあとに足すもの(Issue に残す): Link(足す前に、Link に保存されたカードで、止める指定が働くことと、サーバーがブランドを読めることを確かめる)。
 
 ## 合意の記録
 
-議事録_2026_1123
+議事録_2026_1123、議事録_2026_1128
 
 ## 参考にした情報
 
@@ -124,3 +152,10 @@
 - [Vercel: Access Roles](https://vercel.com/docs/rbac/access-roles)
 - [Resend: Idempotency Keys](https://resend.com/docs/dashboard/emails/idempotency-keys)
 - [Resend: Event Types](https://resend.com/docs/dashboard/webhooks/event-types)
+- [Stripe: Configure auto-respond settings for Smart Disputes](https://docs.stripe.com/disputes/smart-disputes/auto-respond)
+- [Stripe: Smart Disputes](https://docs.stripe.com/disputes/smart-disputes)
+- [Stripe: Adds the ability to choose how you submit a dispute response(変更の記録、2025-09-30)](https://docs.stripe.com/changelog/clover/2025-09-30/dispute-submission-method)
+- [Stripe: 料金体系 & 手数料](https://stripe.com/jp/pricing)
+- [Stripe: How events work](https://docs.stripe.com/event-destinations)
+- [Stripe: Makes thin events for API v1 resources generally available(変更の記録、2026-09-30)](https://docs.stripe.com/changelog/endive/2026-09-30/thin-events-for-api-v1-resources-generally-available)
+- [Stripe: Charge SaaS fees to your connected accounts](https://docs.stripe.com/connect/integrate-billing-connect)
