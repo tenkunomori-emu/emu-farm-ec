@@ -56,7 +56,7 @@
 | メール送信 | Resend | 決定(ADR-0012) |
 | アクセス解析 | Vercel Web Analytics、Speed Insights | 決定(ADR-0012) |
 | テスト | pgTAP、Vitest、Playwright | 決定(ADR-0014) |
-| ソース管理・CI | GitHub(PR、Actions) | 導入中 |
+| ソース管理・CI | GitHub(PR、Actions) | 導入済み(開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「main の保護」) |
 
 システム構成図と、構成要素ごとの役割は、基本設計書([02-basic-design.md](docs/02-basic-design.md))の「システム構成と技術の分担」にあります。
 
