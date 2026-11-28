@@ -2,20 +2,20 @@
 
 生産者が出店し、購入者が生産者から直接買うマーケットプレイスです。決済には Stripe Connect のダイレクト支払いを使います。代金は購入者から各生産者の Stripe アカウントに直接入り、管理者はアプリケーション手数料だけを受け取ります。
 
-> ステータス: **開発基盤の準備中**。要件定義書([01-requirements.md](docs/01-requirements.md))と基本設計書([02-basic-design.md](docs/02-basic-design.md))は確定済みです。現在は、実装に入る前の開発環境(Next.js のプロジェクト、ローカル環境の Supabase、CI)を整えています。各文書の版と状態は、下の「工程と成果物」の表を見てください。
+> ステータス: **開発基盤の準備が完了**。要件定義書([01-requirements.md](docs/01-requirements.md))と基本設計書([02-basic-design.md](docs/02-basic-design.md))は確定済みです。次は、機能ごとの詳細設計と実装です。各文書の版と状態は、下の「工程と成果物」の表を見てください。
 
 ## 工程と成果物
 
 工程は、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート))の「工程とゲート」の順に進めます。ゲートを満たすまで、次の工程には入りません。ただし、詳細設計と実装・単体テストは、機能ごとに進めます。
 
-この表は、各文書の版と状態の正本です。文書の版か状態を変える PR では、この表の行も直します。
+この表は、各文書の版と状態の正本です。文書の版か状態を変える PR では、この表の行も直します。状態は「未着手」「作成中」「確定」「完了」のどれかです。「確定」は会議で合意した成果物に、「完了」は合意を要さない成果物がゲートを満たしたときに書きます。
 
 | 工程 | 成果物 | 状態 |
 |---|---|---|
 | 文書の地図 | 工程とゲート([CONTRIBUTING.md](CONTRIBUTING.md#工程とゲート)) | 確定 |
 | 要件定義 | 要件定義書 v2.1([01-requirements.md](docs/01-requirements.md)) | 確定(タグ requirements-v2.1) |
 | 基本設計 | 基本設計書 v1.0([02-basic-design.md](docs/02-basic-design.md))、ADR-0009〜ADR-0014、方式検証のコード([spikes/](spikes/))、要件から設計、テストへの対応表(トレーサビリティマトリクス)の最初の版([04-test.md](docs/04-test.md)。要件の ID と、基本設計の列) | 確定(タグ basic-design-v1.0) |
-| 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「開発環境の作り方」の節 | 作成中 |
+| 開発基盤の準備 | 設定ファイル、開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「開発環境の作り方」の節 | 完了 |
 | 詳細設計 | 機能ごとのマイグレーション、型、テスト | 未着手 |
 | 実装・単体テスト | コード | 未着手 |
 | テスト・品質確認 | テスト仕様書と結果、対応表のテストの列([04-test.md](docs/04-test.md)) | 未着手 |
@@ -56,7 +56,7 @@
 | メール送信 | Resend | 決定(ADR-0012) |
 | アクセス解析 | Vercel Web Analytics、Speed Insights | 決定(ADR-0012) |
 | テスト | pgTAP、Vitest、Playwright | 決定(ADR-0014) |
-| ソース管理・CI | GitHub(PR、Actions) | 導入中 |
+| ソース管理・CI | GitHub(PR、Actions) | 導入済み(開発の進め方([CONTRIBUTING.md](CONTRIBUTING.md))の「main の保護」) |
 
 システム構成図と、構成要素ごとの役割は、基本設計書([02-basic-design.md](docs/02-basic-design.md))の「システム構成と技術の分担」にあります。
 
