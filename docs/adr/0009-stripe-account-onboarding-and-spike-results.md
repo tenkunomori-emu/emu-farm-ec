@@ -2,6 +2,7 @@
 
 - 日付: 2026-11-21
 - ステータス: 採用
+- 更新(2026-11-28): 有効になった支払いの受け付けを無効に戻せるかと、アカウントの管理の部品で情報を直す操作、確かめ用のアカウントを閉じる操作を、検証のサンドボックスで確かめた(Issue #221)。「確認できた事実(2026-11-28 の追加、Issue #221)」を足し、「影響とリスク」に追記した。
 
 ## 背景
 
@@ -90,11 +91,24 @@
 - 照会をよく使うカードの会社は American Express とディスカバーで、Visa と Mastercard はもう使っていない。日本についての記述はない(「How disputes work」)。MVP で受け付けるカード(FR-044)では、照会が起きるのは主に American Express の支払いである。
 - 止めるブランドの値 discover_global_network には、ディスカバー、ダイナースクラブ、JCB のほかに、銀聯(UnionPay)と Elo が入っている。
 
+## 確認できた事実(2026-11-28 の追加、Issue #221)
+
+検証のサンドボックスで、確かめ用の生産者のアカウントを2つ登録して使った。方式検証のコードは、[spikes/stripe/](../../spikes/stripe/) の 16-disable-account.ts、17-close-account.ts、embedded/server.ts と、[scripts/create-test-connected-account.mjs](../../scripts/create-test-connected-account.mjs) である。
+
+| 確かめたこと | 結果 |
+|---|---|
+| 有効になったカード決済を、ウェブサイトのテスト用の値 `https://inactivity.stripe.com` で無効に戻す | 戻せなかった。ウェブサイトの変更は記録された(v1 の account.updated と、v2 の identity と defaults の更新のイベント)が、6分たっても、カード決済と入金は active のままで、ケイパビリティと要件の変化のイベントもなかった。公式ページ「Testing Stripe Connect」では、この値は、active でないケイパビリティに無効の理由(paused.inactivity)を付けるものである |
+| 受け付けを止めるテスト用のカード(4000000000004210) | 試していない。公式ページ「Testing Stripe Connect」では、連結アカウントに eventually_due の要件がないと働かない。確かめ用のアカウントの足りない項目は0だった |
+| 情報を直す画面へのリンク(Account Link の account_update)を作る | 作れなかった(このアカウントで作れるのは account_onboarding だけ、というエラー)。公式ページ「Onboard your connected account」では、account_update は、情報の収集を管理者が受け持つアカウントにだけ作れる。ダッシュボードがなく、マイナス残高の責任が Stripe のアカウントでは、埋め込みの部品を使う必要がある |
+| アカウントの管理の部品で、ウェブサイトを変える | 部品は、サインイン(テスト用のアカウントでは、SMS のコードに 000-000 を入れる)のあとに、事業形態、プロフェッショナルの詳細、公開情報、個人情報などを表示した。「プロフェッショナルの詳細」の「事業情報」の編集で、ウェブサイトを変えて保存できた。Accounts v2 では、ウェブサイトは defaults.profile.business_url にある |
+| 登録の直後の入金の状態 | 1つ目の確かめ用のアカウントで、入金が pending のまま、項目が1件残っていたが、何も入力せずに、数分で active になり、項目は0になった。Accounts v2 の API リファレンスでは、pending は、Stripe が有効にする前の処理をしている状態で、対応は要らない |
+| 2つ目の確かめ用のアカウントを、Accounts v2 の close で閉じる | 保留中の残高(3,588円)があっても閉じられた。閉じる求めには、アカウントの設定(applied_configurations)をすべて入れる(公式ページ「Connect and the Accounts v2 API」) |
+
 ## 影響とリスク
 
 - サンドボックスの動きが、本番と同じとは限らない(ADR-0005 の「影響とリスク」)。次の点は、本番で確かめる。
   - 残高が足りないときの返金が、すぐに成功するか、結果待ちになるか。サンドボックスではすぐに成功したが、公式ページは結果待ちになるとしている。返金した注文の扱い(FR-087)と、失敗に変わった返金の扱い(FR-088)は、どちらの動きにも対応している。
-  - 支払いの受け付けが無効の間の、代金の確定と返金。FR-011 は、Stripe がどちらに動いても結果が決まる形にしてあり、実装では、確定の失敗と返金の失敗をテストで確かめる。
+  - 支払いの受け付けが無効の間の、代金の確定と返金。FR-011 は、Stripe がどちらに動いても結果が決まる形にしてあり、実装では、確定の失敗と返金の失敗をテストで確かめる。サンドボックスでは、受け付けを無効に戻せず(「確認できた事実(2026-11-28 の追加、Issue #221)」)、一部のケイパビリティを強制しない(公式ページ「Testing Stripe Connect」)ため、単体テストで、置き換えた Stripe で起こす(基本設計書の TST-041)。
   - 部品のログインに、メールアドレスも求められるか。ログインが続く期間。
   - 日本のカード会社が、照会を使うか。
 - 登録の方法についての公式ページの食い違いのうち、「Stripe-hosted onboarding」は、Accounts v2 の版のページの全文を開けず、文の前後を確かめていない。
@@ -110,7 +124,7 @@
 
 ## 合意の記録
 
-議事録_2026_1121
+議事録_2026_1121、議事録_2026_1128
 
 ## 参考にした情報
 
@@ -127,3 +141,7 @@
 - [Stripe: Customize card brands](https://docs.stripe.com/payments/checkout/customization/card-brands)
 - [Stripe: Refund and cancel payments](https://docs.stripe.com/refunds)
 - [Stripe: How disputes work](https://docs.stripe.com/disputes/how-disputes-work)
+- [Stripe: Testing Stripe Connect](https://docs.stripe.com/connect/testing)
+- [Stripe: Onboard your connected account](https://docs.stripe.com/connect/saas/tasks/onboard)
+- [Stripe: Account management](https://docs.stripe.com/connect/supported-embedded-components/account-management)
+- [Stripe: Connect and the Accounts v2 API](https://docs.stripe.com/connect/accounts-v2)

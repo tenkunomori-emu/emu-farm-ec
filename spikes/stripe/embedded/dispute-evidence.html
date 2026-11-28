@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>方式検証: 反証資料の途中までの入力(IF-038)</title>
+  <script src="https://connect-js.stripe.com/v1.0/connect.js" async></script>
+  <style>
+    body { font-family: sans-serif; max-width: 960px; margin: 24px auto; padding: 0 16px; }
+    section { border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    .error { color: #b00020; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>方式検証: 反証資料の途中までの入力(IF-038)</h1>
+  <p>反証資料を途中まで入力し、提出しないまま、このタブを閉じてください。</p>
+  <p id="session-error" class="error"></p>
+  <section><h2>支払い(__PAYMENT__)</h2><div id="dispute"></div><p id="load-error" class="error"></p></section>
+  <script>
+    const fetchClientSecret = async () => {
+      const response = await fetch("/account_session", { method: "POST" });
+      const body = await response.json();
+      if (!response.ok) {
+        document.getElementById("session-error").textContent = "AccountSession を作れませんでした: " + body.error;
+        return undefined;
+      }
+      return body.client_secret;
+    };
+
+    window.StripeConnect = window.StripeConnect || {};
+    StripeConnect.onLoad = () => {
+      const instance = StripeConnect.init({
+        publishableKey: "__PUBLISHABLE_KEY__",
+        fetchClientSecret,
+        locale: "ja-JP",
+      });
+      const component = instance.create("payment-disputes");
+      component.setPayment("__PAYMENT__");
+      component.setOnLoadError(({ error }) => {
+        document.getElementById("load-error").textContent =
+          "読み込めませんでした: " + error.type + " " + (error.message ?? "");
+      });
+      document.getElementById("dispute").appendChild(component);
+    };
+  </script>
+</body>
+</html>

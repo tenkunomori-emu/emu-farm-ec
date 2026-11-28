@@ -251,6 +251,7 @@ Stripe のダッシュボードの Sandboxes で作る。「Copy live account to
 |---|---|
 | Connect の設定 | 資金フローは「売り手が直接代金を回収する」(ADR-0004)。業界は「E-コマース商品」。アカウントの作成は「埋め込みアカウント登録コンポーネント」、アカウント管理は「埋め込みアカウントコンポーネント」、決済処理手数料は「Stripe」(ADR-0009) |
 | 連結アカウント向けの決済手段(Settings → Connect → Payment methods の Default) | 「連結アカウントがダッシュボードから決済手段をカスタマイズできるようにする」は無効。カード、Apple Pay、Google Pay は有効。Link はブロック(IF-024)。カード分割払いは無効(IF-023)。PayPay とコンビニ払いは無効(ADR-0005)。ほかの決済手段は変えない(サーバーは、カードのブランドが Visa、Mastercard、American Express と読めたときだけ注文にするため。ADR-0012 の「決定」の3) |
+| Connect の不審請求の設定(Settings → Connect → Disputes) | 「自動対応を有効にする」はオフ。「連結アカウントが Smart Disputes の自動応答を有効または無効にする」は「許可しない」(Stripe が反証資料を自動で提出しないようにするため。IF-035、IF-038、ADR-0012) |
 
 **支払いを受け付けられる連結アカウントの登録**
 
@@ -278,7 +279,7 @@ Stripe のダッシュボードの Sandboxes で作る。「Copy live account to
 
    氏名、商品の説明、明細書表記などの欄は、テスト用とわかる値を入れる。
 
-3. 連結アカウントの ID を付けて実行し、`カード決済: active`、`入金: active` と表示されることを確かめる。有効になっていないときは、新しいリンクが表示されるので、2 に戻る。
+3. 連結アカウントの ID を付けて実行し、`カード決済: active`、`入金: active` と表示されることを確かめる。Stripe が確認しているときは、待つように表示されるので、数分待ってから、もう一度実行する。入力が足りないときは、新しいリンクが表示されるので、2 に戻る。
 
    ```
    node --env-file=.env.local scripts/create-test-connected-account.mjs acct_...
