@@ -15,8 +15,8 @@ const secretKey = process.env.STRIPE_SECRET_KEY ?? "";
 const publishableKey = process.env.STRIPE_PUBLISHABLE_KEY ?? "";
 const accountId = process.argv[2] ?? "";
 
-if (!secretKey.startsWith("sk_test_") || !publishableKey.startsWith("pk_test_")) {
-  console.error(".env に、サンドボックスの鍵(sk_test_ と pk_test_ で始まるもの)を入れてください。");
+if (!(secretKey.startsWith("sk_test_") || secretKey.startsWith("rk_test_")) || !publishableKey.startsWith("pk_test_")) {
+  console.error("STRIPE_SECRET_KEY にサンドボックスのシークレットキー(sk_test_)か制限付きのキー(rk_test_)を、STRIPE_PUBLISHABLE_KEY に公開可能キー(pk_test_)を入れてください。");
   process.exit(1);
 }
 if (!accountId.startsWith("acct_")) {
