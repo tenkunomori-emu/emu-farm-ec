@@ -17,9 +17,9 @@ import Stripe from "stripe";
 const key = process.env.STRIPE_SECRET_KEY ?? "";
 const accountId = process.argv[2];
 
-if (!key.startsWith("sk_test_")) {
+if (!key.startsWith("sk_test_") && !key.startsWith("rk_test_")) {
   console.error(
-    "STRIPE_SECRET_KEY に、サンドボックスのシークレットキー(sk_test_ で始まるもの)を入れてください。",
+    "STRIPE_SECRET_KEY に、サンドボックスのシークレットキー(sk_test_ で始まるもの)か、制限付きのキー(rk_test_ で始まるもの)を入れてください。",
   );
   process.exit(1);
 }
