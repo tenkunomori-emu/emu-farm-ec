@@ -4,7 +4,8 @@
 // 使い方(リポジトリの直下で):
 //   1. 連結アカウントを作り、入力画面のリンクを表示する
 //        node --env-file=.env.local scripts/create-test-connected-account.mjs
-//   2. 連結アカウントの状態を表示する。カード決済と入金が有効でなければ、新しいリンクを表示する
+//   2. 連結アカウントの状態を表示する。入力が足りないときは、新しいリンクを表示する。
+//      Stripe が確認しているとき(pending)は、待つように表示する
 //        node --env-file=.env.local scripts/create-test-connected-account.mjs acct_...
 //
 // 連結アカウントは、ADR-0009 の「1. 生産者のアカウントの設定」の設定で作る。
@@ -78,15 +79,25 @@ try {
     const capabilities = account.configuration?.merchant?.capabilities;
     const cardPayments = capabilities?.card_payments?.status;
     const payouts = capabilities?.stripe_balance?.payouts?.status;
+    // 入力が要る項目だけを数える。Stripe が確認している項目(awaiting_action_from が stripe)は含めない。
+    const missing = (account.requirements?.entries ?? []).filter(
+      (entry) => entry.awaiting_action_from === "user",
+    ).length;
     console.log("連結アカウントの ID:", account.id);
     console.log("カード決済:", cardPayments);
     console.log("入金:", payouts);
-    console.log(
-      "足りない項目の数:",
-      account.requirements?.entries?.length ?? 0,
-    );
+    console.log("足りない項目の数:", missing);
     if (cardPayments === "active" && payouts === "active") {
       console.log("支払いを受け付けられます。");
+    } else if (
+      [cardPayments, payouts].every(
+        (status) => status === "active" || status === "pending",
+      )
+    ) {
+      // pending は、Stripe が有効にする前の処理をしている状態で、入力は要らない(Stripe の API リファレンス)。
+      console.log(
+        "Stripe が確認しています。数分待ってから、もう一度実行してください。",
+      );
     } else {
       await printLink(account.id);
     }

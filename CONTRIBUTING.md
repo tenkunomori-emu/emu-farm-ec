@@ -278,7 +278,7 @@ Stripe のダッシュボードの Sandboxes で作る。「Copy live account to
 
    氏名、商品の説明、明細書表記などの欄は、テスト用とわかる値を入れる。
 
-3. 連結アカウントの ID を付けて実行し、`カード決済: active`、`入金: active` と表示されることを確かめる。有効になっていないときは、新しいリンクが表示されるので、2 に戻る。
+3. 連結アカウントの ID を付けて実行し、`カード決済: active`、`入金: active` と表示されることを確かめる。Stripe が確認しているときは、待つように表示されるので、数分待ってから、もう一度実行する。入力が足りないときは、新しいリンクが表示されるので、2 に戻る。
 
    ```
    node --env-file=.env.local scripts/create-test-connected-account.mjs acct_...
