@@ -86,10 +86,11 @@ try {
     console.log("連結アカウントの ID:", account.id);
     console.log("カード決済:", cardPayments);
     console.log("入金:", payouts);
-    console.log("足りない項目の数:", missing);
+    console.log("入力が要る項目の数:", missing);
     if (cardPayments === "active" && payouts === "active") {
       console.log("支払いを受け付けられます。");
     } else if (
+      missing === 0 &&
       [cardPayments, payouts].every(
         (status) => status === "active" || status === "pending",
       )
